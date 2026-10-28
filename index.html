@@ -14,6 +14,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="YOLA YURMALIZA, S.Pd">
   <meta name="theme-color" content="#1d4ed8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
   
   <!-- Manifest Inline with Custom Icon -->
   <link rel="manifest" href="data:application/json;base64,eyJkZWZhdWx0X2xvY2FsZSI6ImlkIiwibmFtZSI6IllPTEEgWVVSTUFMSVpBLCBTLlBkIC0gQWRtaW5pc3RyYXNpIEd1cnUiLCJzaG9ydF9uYW1lIjoiWU9MQSBZVVJNYUxpWkEiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBmMTdhOSIsInRoZW1lX2NvbG9yIjoiIzFkNGVkOCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL2lpbGkuaW8vbjhGZGQwQi5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
@@ -56,6 +57,35 @@
       background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
       font-family: 'Inter', sans-serif;
       min-height: 100vh;
+      width: 100vw;
+      overflow-x: hidden;
+    }
+    
+    /* Layout Adaptif Android & Touch Friendly */
+    .android-container {
+      width: 100%;
+      max-width: 100%;
+      padding-left: clamp(0.75rem, 3vw, 1.5rem);
+      padding-right: clamp(0.75rem, 3vw, 1.5rem);
+    }
+    
+    .card-3d {
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(226, 232, 240, 0.8);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    @media (max-width: 640px) {
+      .card-3d {
+        border-radius: 14px;
+      }
+    }
+    
+    .card-3d:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 24px -8px rgba(2, 132, 199, 0.2), 0 8px 10px -4px rgba(0, 0, 0, 0.06);
     }
     .card-3d {
       background: #ffffff;
@@ -308,7 +338,7 @@
         </form>
 
         <div class="pt-4 border-t border-slate-100 text-center">
-          <p class="text-xs text-slate-400 font-medium">Aplikasi Administrasi Guru Kelas v2.6 (Feature Presensi QR Code)</p>
+          <p class="text-xs text-slate-400 font-medium">Aplikasi Administrasi Guru Kelas v2.6</p>
         </div>
       </div>
     </div>
@@ -501,15 +531,15 @@
       </header>
 
       <!-- Dynamic Content Area -->
-      <div class="flex-1 overflow-y-auto p-4 md:p-8">
+      <div class="flex-1 overflow-y-auto p-3 sm:p-6 md:p-8 space-y-4 sm:space-y-6">
         
         <!-- 1. BERANDA -->
-        <section id="section-beranda" class="space-y-6">
-          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 p-6 md:p-8 text-white shadow-xl">
-            <div class="relative z-10 space-y-3 max-w-2xl">
-              <span class="px-3 py-1 rounded-full bg-white/20 text-blue-100 text-xs font-bold backdrop-blur-md inline-block">Selamat Datang Kembali 👋</span>
-              <h3 class="text-2xl md:text-4xl font-black tracking-tight">YOLA YURMALIZA, S.Pd</h3>
-              <p class="text-xs md:text-sm text-blue-100/90 leading-relaxed">
+        <section id="section-beranda" class="space-y-4 sm:space-y-6">
+          <div class="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-gradient-to-r from-blue-700 via-blue-800 to-indigo-900 p-4 sm:p-6 md:p-8 text-white shadow-xl">
+            <div class="relative z-10 space-y-2 sm:space-y-3 max-w-2xl">
+              <span class="px-2.5 py-0.5 sm:px-3 sm:py-1 rounded-full bg-white/20 text-blue-100 text-[10px] sm:text-xs font-bold backdrop-blur-md inline-block">Selamat Datang Kembali 👋</span>
+              <h3 class="text-xl sm:text-2xl md:text-4xl font-black tracking-tight leading-tight">YOLA YURMALIZA, S.Pd</h3>
+              <p class="text-[11px] sm:text-xs md:text-sm text-blue-100/90 leading-relaxed">
                 Kelola administrasi kelas, presensi QR Code siswa, jurnal mengajar, hingga nilai akademis dengan cepat dan terstruktur.
               </p>
 
@@ -531,11 +561,11 @@
                 </button>
               </div>
             </div>
-            <div class="absolute -right-10 -bottom-10 w-60 h-60 bg-white/10 rounded-full blur-2xl"></div>
+            <div class="absolute -right-10 -bottom-10 w-48 sm:w-60 h-48 sm:h-60 bg-white/10 rounded-full blur-2xl"></div>
           </div>
 
           <!-- STATISTIK BERANDA KHUSUS DESKTOP (TAMPIL DI LAYAR SM KE ATAS) -->
-          <div class="hidden sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-4">
+          <div class="hidden sm:grid sm:grid-cols-3 lg:grid-cols-6 gap-3 sm:gap-4">
             <div class="card-3d p-4 flex flex-col justify-between">
               <div class="flex items-center justify-between mb-2">
                 <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Total Siswa</p>
@@ -600,65 +630,65 @@
           <!-- STATISTIK BERANDA KHUSUS TAMPILAN HP / ANDROID (RINGKASAN REKAP ABSENSI HARIAN) -->
           <div class="sm:hidden space-y-3">
             <div class="flex items-center justify-between px-1">
-              <h4 class="font-extrabold text-sm text-slate-800 flex items-center gap-2">
+              <h4 class="font-extrabold text-xs text-slate-800 flex items-center gap-1.5">
                 <i class="fa-solid fa-chart-line text-blue-600"></i> Rekap Presensi Harian
               </h4>
-              <span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-700">Real-Time HP</span>
+              <span class="text-[9px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">Real-Time Android</span>
             </div>
 
-            <div class="grid grid-cols-2 gap-3">
-              <div class="card-3d p-4 flex flex-col justify-between border-l-4 border-l-emerald-500 bg-emerald-50/20">
+            <div class="grid grid-cols-2 gap-2.5">
+              <div class="card-3d p-3 flex flex-col justify-between border-l-4 border-l-emerald-500 bg-emerald-50/20">
                 <div class="flex items-center justify-between mb-1">
-                  <p class="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">Total Hadir</p>
-                  <div class="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-xs font-bold">
+                  <p class="text-[9px] font-bold text-emerald-800 uppercase tracking-wider">Total Hadir</p>
+                  <div class="w-6 h-6 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center text-[10px] font-bold">
                     <i class="fa-solid fa-user-check"></i>
                   </div>
                 </div>
-                <h3 class="text-2xl font-black text-emerald-700" id="stat-mobile-hadir">0</h3>
+                <h3 class="text-xl font-black text-emerald-700" id="stat-mobile-hadir">0</h3>
               </div>
 
-              <div class="card-3d p-4 flex flex-col justify-between border-l-4 border-l-blue-500 bg-blue-50/20">
+              <div class="card-3d p-3 flex flex-col justify-between border-l-4 border-l-blue-500 bg-blue-50/20">
                 <div class="flex items-center justify-between mb-1">
-                  <p class="text-[10px] font-bold text-blue-800 uppercase tracking-wider">Total Izin</p>
-                  <div class="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-xs font-bold">
+                  <p class="text-[9px] font-bold text-blue-800 uppercase tracking-wider">Total Izin</p>
+                  <div class="w-6 h-6 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center text-[10px] font-bold">
                     <i class="fa-solid fa-envelope-open-text"></i>
                   </div>
                 </div>
-                <h3 class="text-2xl font-black text-blue-700" id="stat-mobile-izin">0</h3>
+                <h3 class="text-xl font-black text-blue-700" id="stat-mobile-izin">0</h3>
               </div>
 
-              <div class="card-3d p-4 flex flex-col justify-between border-l-4 border-l-amber-500 bg-amber-50/20">
+              <div class="card-3d p-3 flex flex-col justify-between border-l-4 border-l-amber-500 bg-amber-50/20">
                 <div class="flex items-center justify-between mb-1">
-                  <p class="text-[10px] font-bold text-amber-800 uppercase tracking-wider">Total Sakit</p>
-                  <div class="w-7 h-7 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-xs font-bold">
+                  <p class="text-[9px] font-bold text-amber-800 uppercase tracking-wider">Total Sakit</p>
+                  <div class="w-6 h-6 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center text-[10px] font-bold">
                     <i class="fa-solid fa-notes-medical"></i>
                   </div>
                 </div>
-                <h3 class="text-2xl font-black text-amber-700" id="stat-mobile-sakit">0</h3>
+                <h3 class="text-xl font-black text-amber-700" id="stat-mobile-sakit">0</h3>
               </div>
 
-              <div class="card-3d p-4 flex flex-col justify-between border-l-4 border-l-rose-500 bg-rose-50/20">
+              <div class="card-3d p-3 flex flex-col justify-between border-l-4 border-l-rose-500 bg-rose-50/20">
                 <div class="flex items-center justify-between mb-1">
-                  <p class="text-[10px] font-bold text-rose-800 uppercase tracking-wider">Tanpa Ket.</p>
-                  <div class="w-7 h-7 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center text-xs font-bold">
+                  <p class="text-[9px] font-bold text-rose-800 uppercase tracking-wider">Tanpa Ket.</p>
+                  <div class="w-6 h-6 rounded-lg bg-rose-100 text-rose-700 flex items-center justify-center text-[10px] font-bold">
                     <i class="fa-solid fa-user-xmark"></i>
                   </div>
                 </div>
-                <h3 class="text-2xl font-black text-rose-700" id="stat-mobile-alpa">0</h3>
+                <h3 class="text-xl font-black text-rose-700" id="stat-mobile-alpa">0</h3>
               </div>
             </div>
           </div>
 
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             <!-- DATA UTAMA SEKOLAH (HANYA TAMPIL DI DESKTOP / LAPTOP) -->
-            <div class="card-3d p-6 space-y-4 hidden sm:block">
+            <div class="card-3d p-4 sm:p-6 space-y-4 hidden sm:block">
               <div class="flex items-center justify-between border-b pb-3">
-                <h4 class="font-extrabold text-slate-800 text-base flex items-center gap-2">
+                <h4 class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-2">
                   <i class="fa-solid fa-building-columns text-blue-600"></i> Data Utama Sekolah
                 </h4>
                 <button onclick="switchNav('sekolah')" class="text-xs font-bold text-blue-600 hover:underline">Edit</button>
               </div>
-              <div class="space-y-2 text-sm">
+              <div class="space-y-2 text-xs sm:text-sm">
                 <div class="flex justify-between"><span class="text-slate-500">Nama Sekolah:</span> <span class="font-bold text-slate-800" id="dash-sekolah-nama">-</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Kota / Tempat:</span> <span class="font-bold text-slate-800" id="dash-sekolah-kota">-</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">Kepala Sekolah:</span> <span class="font-bold text-slate-800" id="dash-sekolah-kepsek">-</span></div>
@@ -667,14 +697,14 @@
             </div>
 
             <!-- PROFILE WALI KELAS (TAMPIL DI HP & DESKTOP) -->
-            <div class="card-3d p-6 space-y-4">
+            <div class="card-3d p-4 sm:p-6 space-y-3 sm:space-y-4">
               <div class="flex items-center justify-between border-b pb-3">
-                <h4 class="font-extrabold text-slate-800 text-base flex items-center gap-2">
+                <h4 class="font-extrabold text-slate-800 text-sm sm:text-base flex items-center gap-2">
                   <i class="fa-solid fa-user-tie text-blue-600"></i> Profile Wali Kelas
                 </h4>
                 <button onclick="switchNav('walas')" class="text-xs font-bold text-blue-600 hover:underline">Edit</button>
               </div>
-              <div class="space-y-2 text-sm">
+              <div class="space-y-2 text-xs sm:text-sm">
                 <div class="flex justify-between"><span class="text-slate-500">Nama Wali Kelas:</span> <span class="font-bold text-slate-800" id="dash-walas-nama">-</span></div>
                 <div class="flex justify-between"><span class="text-slate-500">NIP Wali Kelas:</span> <span class="font-bold text-slate-800" id="dash-walas-nip">-</span></div>
                 <div class="hidden sm:flex justify-between"><span class="text-slate-500">Tahun Pelajaran Active:</span> <span class="font-bold text-slate-800" id="dash-tapel-aktif">-</span></div>
@@ -695,7 +725,7 @@
               <!-- TOMBOL CETAK SEMUA KARTU F4 (TAMPIL DI TABLET & LAPTOP / MD UP) -->
               <button type="button" onclick="printAllQrCardsF4()" class="hidden md:inline-flex bg-purple-700 hover:bg-purple-800 text-white font-extrabold px-4 py-2.5 rounded-xl items-center gap-2 text-sm shadow-md transition transform hover:scale-105 active:scale-95 cursor-pointer border border-purple-500">
                 <i class="fa-solid fa-print text-base"></i>
-                <span>Cetak Semua Kartu (F4 - 4/Lembar)</span>
+                <span>Cetak Semua Kartu</span>
               </button>
               <button type="button" onclick="openModalTarikSiswa()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm shadow-md transition transform hover:scale-105 active:scale-95 cursor-pointer">
                 <i class="fa-solid fa-cloud-arrow-down text-base"></i>
@@ -3325,17 +3355,53 @@
         if (siswaObj) {
           // Efek Haptic Vibration saat berhasil di scan di HP
           if (navigator.vibrate) {
-            navigator.vibrate(100);
+            navigator.vibrate([100, 50, 100]);
           }
 
-          currentScannedSiswa = siswaObj;
-          setElText('qr-result-nama', siswaObj.nama);
-          setElText('qr-result-detail', `NISN: ${siswaObj.nisn || '-'} | Kelas: ${siswaObj.kelas || '-'}`);
-          document.getElementById('qr-result-status').value = 'Hadir';
-          document.getElementById('qr-result-keterangan').value = 'Hadir via Scan QR Code';
+          // Otomatis Simpan Presensi "Hadir"
+          const today = new Date().toISOString().split('T')[0];
+          const existingIndex = appData.absensi.findIndex(a => a.siswaId === siswaObj.id && a.tanggal === today);
 
-          closeModalQrScanner();
-          openModal('modal-qr-result');
+          const payload = {
+            id: existingIndex !== -1 ? appData.absensi[existingIndex].id : Date.now(),
+            siswaId: siswaObj.id,
+            nisn: siswaObj.nisn || '',
+            kelas: siswaObj.kelas || '',
+            tanggal: today,
+            status: 'Hadir',
+            keterangan: 'Hadir via Scan QR Code (Otomat)'
+          };
+
+          if (existingIndex !== -1) {
+            appData.absensi[existingIndex] = payload;
+          } else {
+            appData.absensi.push(payload);
+          }
+
+          renderAbsensiTable();
+          saveAppDataToRemote('save');
+
+          // Ucapan Terima Kasih
+          showToast('success-save', `Terima Kasih, ${siswaObj.nama}! Presensi Hadir Berhasil Dicatat.`);
+
+          // Putar Ucapan Suara (Web Speech API jika didukung HP)
+          if ('speechSynthesis' in window) {
+            try {
+              window.speechSynthesis.cancel();
+              const utterance = new SpeechSynthesisUtterance(`Terima kasih ${siswaObj.nama}, presensi berhasil.`);
+              utterance.lang = 'id-ID';
+              utterance.rate = 1.0;
+              window.speechSynthesis.speak(utterance);
+            } catch(err){}
+          }
+
+          // Lanjutkan Scan Otomatis dalam 2 Detik
+          setTimeout(() => {
+            if (html5QrCodeScanner) {
+              try { html5QrCodeScanner.resume(); } catch(e){}
+            }
+          }, 2200);
+
         } else {
           showToast('error', 'QR Code siswa tidak ditemukan dalam sistem!');
           setTimeout(() => {

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>YOLA YURMALIZA, S.Pd - Administrasi Guru Kelas & Presensi QR Code</title>
+  <title>YOLA YURMALIZA, S.Pd</title>
   <!-- Favicon -->
-  <link rel="icon" type="image/png" href="https://iili.io/nvSfEXt.png">
-  <link rel="apple-touch-icon" href="https://iili.io/nvSfEXt.png">
+  <link rel="icon" type="image/png" href="https://iili.io/n8Fdd0B.png">
+  <link rel="apple-touch-icon" href="https://iili.io/n8Fdd0B.png">
 
   <!-- PWA & Mobile Capabilities -->
   <meta name="mobile-web-app-capable" content="yes">
@@ -15,8 +15,8 @@
   <meta name="apple-mobile-web-app-title" content="YOLA YURMALIZA, S.Pd">
   <meta name="theme-color" content="#1d4ed8">
   
-  <!-- Manifest Inline -->
-  <link rel="manifest" href="data:application/json;base64,eyJkZWZhdWx0X2xvY2FsZSI6ImlkIiwibmFtZSI6IllPTEEgWVVSTUFMSVpBLCBTLlBkIC0gQWRtaW5pc3RyYXNpIEd1cnUiLCJzaG9ydF9uYW1lIjoiWU9MQSBZVVJNYUxpWkEiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBmMTdhOSIsInRoZW1lX2NvbG9yIjoiIzFkNGVkOCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL2lpbGkuaW8vbnZTZkVYdC5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
+  <!-- Manifest Inline with Custom Icon -->
+  <link rel="manifest" href="data:application/json;base64,eyJkZWZhdWx0X2xvY2FsZSI6ImlkIiwibmFtZSI6IllPTEEgWVVSTUFMSVpBLCBTLlBkIC0gQWRtaW5pc3RyYXNpIEd1cnUiLCJzaG9ydF9uYW1lIjoiWU9MQSBZVVJNYUxpWkEiLCJzdGFydF91cmwiOiIuIiwiZGlzcGxheSI6InN0YW5kYWxvbmUiLCJiYWNrZ3JvdW5kX2NvbG9yIjoiIzBmMTdhOSIsInRoZW1lX2NvbG9yIjoiIzFkNGVkOCIsImljb25zIjpbeyJzcmMiOiJodHRwczovL2lpbGkuaW8vbjhGZGQwQi5wbmciLCJzaXplcyI6IjUxMng1MTIiLCJ0eXBlIjoiaW1hZ2UvcG5nIiwicHVycG9zZSI6ImFueSBtYXNrYWJsZSJ9XX0=">
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -452,7 +452,7 @@
       <div class="mt-4 pt-3 border-t border-blue-300/60 px-3 flex items-center justify-between">
         <div class="flex items-center gap-2.5 overflow-hidden">
           <div class="w-9 h-9 rounded-full bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-sm border-2 border-blue-400 flex-shrink-0 overflow-hidden shadow-sm">
-            <img src="https://iili.io/nvSfEXt.png" alt="Foto Profil" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerText='YY';">
+            <img src="https://iili.io/n8Fdd0B.png" alt="Foto Profil" class="w-full h-full object-cover" onerror="this.onerror=null; this.parentElement.innerText='YY';">
           </div>
           <div class="overflow-hidden">
             <p class="text-xs font-bold text-slate-800 truncate">Yola Yurmaliza</p>
@@ -473,7 +473,7 @@
         <div class="flex items-center gap-3">
           <!-- FOTO PROFIL GURU GANTI TOMBOL HAMBURGER PADA HP (KLIK UNTUK BUKA SIDEBAR DRAWER) -->
           <button onclick="toggleMobileSidebar(true)" class="md:hidden w-10 h-10 rounded-full bg-blue-100 text-slate-700 flex items-center justify-center text-lg active:scale-95 transition overflow-hidden border-2 border-blue-500 shadow-sm flex-shrink-0">
-            <img src="https://iili.io/nvSfEXt.png" alt="Foto Guru" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/100x100/0284c7/ffffff?text=YY';">
+            <img src="https://iili.io/n8Fdd0B.png" alt="Foto Guru" class="w-full h-full object-cover" onerror="this.onerror=null; this.src='https://placehold.co/100x100/0284c7/ffffff?text=YY';">
           </button>
           <div>
             <h2 id="page-title" class="text-lg md:text-2xl font-extrabold text-slate-800 tracking-tight leading-tight">Beranda</h2>
@@ -3013,71 +3013,35 @@
       const qrContainer = document.getElementById('qrcode-container');
       if (qrContainer) {
         qrContainer.innerHTML = '';
-        const payloadStr = JSON.stringify({
-          id: siswa.id,
-          nisn: siswa.nisn || '',
-          nama: siswa.nama || '',
-          kelas: siswa.kelas || ''
-        });
+        // Format payload QR Code yang presisi & mudah dibaca pemindai
+        const payloadObj = {
+          id: String(siswa.id),
+          nisn: String(siswa.nisn || ''),
+          nama: String(siswa.nama || ''),
+          kelas: String(siswa.kelas || '')
+        };
+        const payloadStr = JSON.stringify(payloadObj);
 
         new QRCode(qrContainer, {
           text: payloadStr,
-          width: 140,
-          height: 140,
-          colorDark: "#0f172a",
+          width: 160,
+          height: 160,
+          colorDark: "#000000",
           colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
+          correctLevel: QRCode.CorrectLevel.M
         });
       }
 
       openModal('modal-print-qr-card');
     }
 
-    function printSingleQrCard() {
-      const printWin = window.open('', '_blank');
-      if (!printWin) {
-        showToast('error', 'Izinkan pop-up browser untuk mencetak kartu QR!');
-        return;
-      }
-
-      const cardHtml = document.getElementById('printable-qr-card').outerHTML;
-
-      printWin.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Kartu Presensi QR Code Siswa</title>
-          <script src="https://cdn.tailwindcss.com"><\/script>
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-          <style>
-            @page { size: A4 portrait; margin: 20mm; }
-            body { font-family: sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f8fafc; }
-            .card-wrap { width: 320px; }
-          </style>
-        </head>
-        <body>
-          <div class="card-wrap">
-            ${cardHtml}
-          </div>
-          <script>
-            window.onload = function() {
-              setTimeout(() => { window.print(); }, 500);
-            }
-          <\/script>
-        </body>
-        </html>
-      `);
-      printWin.document.close();
-    }
-
-    // CETAK SEMUA KARTU PRESENSI QR CODE PADA KERTAS F4 (4 KARTU PER LEMBAR)
     function printAllQrCardsF4() {
       if (!appData.siswa || appData.siswa.length === 0) {
         showToast('error', 'Belum ada data siswa untuk dicetak!');
         return;
       }
 
-      showToast('loading-save', 'Menyiapkan layout cetak Kertas F4 (4 kartu/lembar)...');
+      showToast('success-save', 'Layout cetak F4 berhasil disiapkan!');
 
       const printWin = window.open('', '_blank');
       if (!printWin) {
@@ -3096,13 +3060,6 @@
         let cardsGridHtml = '';
 
         chunk.forEach((siswa) => {
-          const qrPayload = JSON.stringify({
-            id: siswa.id,
-            nisn: siswa.nisn || '',
-            nama: siswa.nama || '',
-            kelas: siswa.kelas || ''
-          });
-
           cardsGridHtml += `
             <div class="qr-card">
               <div class="card-header">
@@ -3143,7 +3100,7 @@
           <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"><\/script>
           <style>
             @page {
-              size: 215mm 330mm portrait; /* Kertas F4 / Folio */
+              size: 215mm 330mm portrait;
               margin: 10mm 12mm;
             }
             * {
@@ -3280,19 +3237,19 @@
               siswaData.forEach(function(s) {
                 var container = document.getElementById("qrcode-bulk-" + s.id);
                 if (container) {
-                  var payloadStr = JSON.stringify({
-                    id: s.id,
-                    nisn: s.nisn || '',
-                    nama: s.nama || '',
-                    kelas: s.kelas || ''
-                  });
+                  var payloadObj = {
+                    id: String(s.id),
+                    nisn: String(s.nisn || ''),
+                    nama: String(s.nama || ''),
+                    kelas: String(s.kelas || '')
+                  };
                   new QRCode(container, {
-                    text: payloadStr,
-                    width: 140,
-                    height: 140,
-                    colorDark: "#0f172a",
+                    text: JSON.stringify(payloadObj),
+                    width: 150,
+                    height: 150,
+                    colorDark: "#000000",
                     colorLight: "#ffffff",
-                    correctLevel: QRCode.CorrectLevel.H
+                    correctLevel: QRCode.CorrectLevel.M
                   });
                 }
               });
@@ -3317,7 +3274,11 @@
           html5QrCodeScanner = new Html5Qrcode("reader");
         }
 
-        const config = { fps: 10, qrbox: { width: 220, height: 220 } };
+        const config = { 
+          fps: 15, 
+          qrbox: { width: 230, height: 230 },
+          aspectRatio: 1.0
+        };
 
         html5QrCodeScanner.start(
           { facingMode: "environment" },
@@ -3331,51 +3292,64 @@
       }, 300);
     }
 
-    function closeModalQrScanner() {
-      if (html5QrCodeScanner) {
-        html5QrCodeScanner.stop().then(() => {
-          closeModal('modal-qr-scanner');
-        }).catch(err => {
-          closeModal('modal-qr-scanner');
-        });
-      } else {
-        closeModal('modal-qr-scanner');
-      }
-    }
-
     function onQrCodeScanSuccess(decodedText, decodedResult) {
       if (html5QrCodeScanner) {
-        html5QrCodeScanner.pause();
+        try {
+          html5QrCodeScanner.pause();
+        } catch(e){}
       }
 
       try {
         let siswaObj = null;
-        if (decodedText.startsWith('{') && decodedText.endsWith('}')) {
-          const parsed = JSON.parse(decodedText);
-          siswaObj = appData.siswa.find(s => s.id === parsed.id || (parsed.nisn && s.nisn === parsed.nisn));
-        } else {
-          siswaObj = appData.siswa.find(s => String(s.nisn).trim() === decodedText.trim() || String(s.id) === decodedText.trim());
+        const cleanText = String(decodedText).trim();
+
+        // 1. Coba deteksi format JSON
+        if (cleanText.startsWith('{') && cleanText.endsWith('}')) {
+          const parsed = JSON.parse(cleanText);
+          siswaObj = appData.siswa.find(s => 
+            (parsed.id && String(s.id) === String(parsed.id)) ||
+            (parsed.nisn && s.nisn && String(s.nisn).trim() === String(parsed.nisn).trim()) ||
+            (parsed.nama && s.nama && s.nama.toLowerCase().trim() === String(parsed.nama).toLowerCase().trim())
+          );
+        }
+
+        // 2. Jika tidak, coba pencarian berdasarkan NISN / ID / Nama langsung
+        if (!siswaObj) {
+          siswaObj = appData.siswa.find(s => 
+            String(s.nisn).trim() === cleanText || 
+            String(s.id).trim() === cleanText ||
+            (s.nama && s.nama.toLowerCase().trim() === cleanText.toLowerCase())
+          );
         }
 
         if (siswaObj) {
+          // Efek Haptic Vibration saat berhasil di scan di HP
+          if (navigator.vibrate) {
+            navigator.vibrate(100);
+          }
+
           currentScannedSiswa = siswaObj;
           setElText('qr-result-nama', siswaObj.nama);
           setElText('qr-result-detail', `NISN: ${siswaObj.nisn || '-'} | Kelas: ${siswaObj.kelas || '-'}`);
           document.getElementById('qr-result-status').value = 'Hadir';
           document.getElementById('qr-result-keterangan').value = 'Hadir via Scan QR Code';
 
-          closeModal('modal-qr-scanner');
+          closeModalQrScanner();
           openModal('modal-qr-result');
         } else {
-          showToast('error', 'QR Code tidak terdaftar dalam Data Siswa!');
+          showToast('error', 'QR Code siswa tidak ditemukan dalam sistem!');
           setTimeout(() => {
-            if (html5QrCodeScanner) html5QrCodeScanner.resume();
+            if (html5QrCodeScanner) {
+              try { html5QrCodeScanner.resume(); } catch(e){}
+            }
           }, 1500);
         }
       } catch(e) {
-        showToast('error', 'Format QR Code tidak valid!');
+        showToast('error', 'Format QR Code tidak dapat dibaca!');
         setTimeout(() => {
-          if (html5QrCodeScanner) html5QrCodeScanner.resume();
+          if (html5QrCodeScanner) {
+            try { html5QrCodeScanner.resume(); } catch(e){}
+          }
         }, 1500);
       }
     }

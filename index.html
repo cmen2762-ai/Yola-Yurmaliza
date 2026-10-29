@@ -87,17 +87,14 @@
       transform: translateY(-2px);
       box-shadow: 0 12px 24px -8px rgba(2, 132, 199, 0.2), 0 8px 10px -4px rgba(0, 0, 0, 0.06);
     }
-    .card-3d {
-      background: #ffffff;
-      border-radius: 20px;
-      box-shadow: 0 10px 25px -5px rgba(2, 132, 199, 0.15), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* DETEKSI LAYAR HP MIRING (LANDSCAPE) */
+    @media screen and (max-width: 932px) and (orientation: landscape) {
+      #mobile-landscape-warning {
+        display: flex !important;
+      }
     }
-    .card-3d:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 15px 30px -10px rgba(2, 132, 199, 0.25), 0 10px 12px -5px rgba(0, 0, 0, 0.08);
-    }
+    
     .btn-3d-primary {
       background: linear-gradient(180deg, #3b82f6 0%, #1d4ed8 100%);
       box-shadow: 0 4px 0 #1e3a8a, 0 8px 15px rgba(29, 78, 216, 0.35);
@@ -204,19 +201,30 @@
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased">
 
-  <!-- OVERLAY PERINGATAN MODAL KHUSUS HP MODE LANSEKAP -->
-  <div id="mobile-landscape-warning" class="fixed inset-0 z-[9999] bg-slate-900/95 backdrop-blur-xl hidden flex-col items-center justify-center p-6 text-center text-white space-y-4">
-    <div class="w-20 h-20 rounded-3xl bg-amber-500/20 text-amber-400 border border-amber-500/30 flex items-center justify-center text-4xl shadow-2xl animate-bounce">
-      <i class="fa-solid fa-mobile-screen-button rotate-90"></i>
+  <!-- OVERLAY PERINGATAN MODAL KHUSUS HP MODE LANSEKAP / MIRING -->
+  <div id="mobile-landscape-warning" class="fixed inset-0 z-[99999] bg-slate-900/98 backdrop-blur-2xl hidden flex-col items-center justify-center p-6 text-center text-white space-y-5">
+    <div class="relative flex items-center justify-center">
+      <div class="w-24 h-24 rounded-3xl bg-gradient-to-tr from-amber-500/30 to-orange-500/20 text-amber-400 border border-amber-500/40 flex items-center justify-center text-5xl shadow-2xl animate-bounce">
+        <i class="fa-solid fa-mobile-screen-button rotate-90"></i>
+      </div>
+      <div class="absolute -top-1 -right-1 w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold shadow-lg">
+        <i class="fa-solid fa-ban"></i>
+      </div>
     </div>
+
     <div class="space-y-2 max-w-xs">
-      <h3 class="text-xl font-black text-white tracking-tight">Mode Lansekap Belum Didukung</h3>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] font-extrabold uppercase tracking-wider">
+        <i class="fa-solid fa-triangle-exclamation"></i> Tampilan Miring Dideteksi
+      </div>
+      <h3 class="text-xl font-black text-white tracking-tight">Mohon Tegakkan Layar HP Anda</h3>
       <p class="text-xs text-slate-300 font-medium leading-relaxed">
-        Aplikasi ADMOPS di perangkat HP khusus dirancang untuk tampilan <b>Potret (Portrait)</b> agar presisi & praktis.
+        Aplikasi ADMOPS dirancang khusus untuk posisi <b>Tegak (Potret / Portrait)</b> di layar smartphone demi kenyamanan & presensi QR Code yang presisi.
       </p>
     </div>
-    <div class="pt-2 px-4 py-2 rounded-full bg-slate-800 text-amber-300 border border-slate-700 text-[11px] font-bold flex items-center gap-2">
-      <i class="fa-solid fa-rotate"></i> Silakan Putar Layar HP Anda ke Posisi Tegak (Potret)
+
+    <div class="pt-2 px-5 py-3 rounded-2xl bg-slate-800/90 text-amber-300 border border-slate-700 text-xs font-bold flex items-center gap-2.5 shadow-xl">
+      <i class="fa-solid fa-rotate-left text-base animate-spin"></i> 
+      <span>Putar HP Kembali ke Posisi Potret (Tegak)</span>
     </div>
   </div>
 
@@ -285,7 +293,7 @@
       <div class="p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-white space-y-4 sm:space-y-6">
         <div class="text-center sm:text-left space-y-1">
           <div class="sm:hidden inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold mb-1 border border-blue-200">
-            <i class="fa-solid fa-graduation-cap"></i> Administrasi Guru 
+            <i class="fa-solid fa-graduation-cap"></i> Yola Yurmaliza, S.Pd
           </div>
           <h3 class="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">Sign In Aplikasi</h3>
           <p class="text-[11px] sm:text-xs text-slate-500 font-medium">Masukan kredensial untuk mengakses sistem kelas</p>
@@ -343,7 +351,7 @@
         </form>
 
         <div class="pt-2 sm:pt-4 border-t border-slate-100 text-center">
-          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Aplikasi Administrasi</p>
+          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Aplikasi Administrasi Guru</p>
         </div>
       </div>
     </div>
@@ -517,12 +525,6 @@
         </div>
 
         <div class="flex items-center gap-2 md:gap-4">
-          <!-- TOMBOL QUICK INSTALL HEADER -->
-          <button type="button" onclick="triggerPwaInstall()" id="btn-header-install" class="hidden bg-emerald-600 hover:bg-emerald-700 text-white px-3 py-1.5 rounded-full text-[11px] font-extrabold flex items-center gap-1.5 shadow-md border border-emerald-400 transition animate-pulse">
-            <i class="fa-solid fa-download"></i>
-            <span id="btn-header-install-text">Instal App</span>
-          </button>
-
           <div id="sync-status-badge" class="bg-emerald-50 text-emerald-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-emerald-200">
             <span class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse" id="sync-status-dot"></span>
             <span id="sync-status-text">Terhubung</span>
@@ -2377,10 +2379,7 @@
     });
 
     function showPwaInstallButtons(available) {
-      const btnHeader = document.getElementById('btn-header-install');
-      if (btnHeader) {
-        if (available) btnHeader.classList.remove('hidden');
-      }
+      // Direct install button in header removed as requested
     }
 
     function triggerPwaInstall() {
@@ -2419,11 +2418,9 @@
 
     function markAppAsInstalledUI() {
       const btnSidebarText = document.getElementById('btn-sidebar-install-text');
-      const btnHeaderText = document.getElementById('btn-header-install-text');
       const btnHeroMobileText = document.getElementById('btn-hero-install-mobile-text');
 
       if (btnSidebarText) btnSidebarText.innerText = "App Terpasang ✓";
-      if (btnHeaderText) btnHeaderText.innerText = "Terpasang";
       if (btnHeroMobileText) btnHeroMobileText.innerText = "Terpasang ✓";
     }
 
@@ -5033,7 +5030,31 @@
     window.onload = function() {
       checkAuthStatus();
       checkPwaStandalone();
+      checkOrientationStatus();
     };
+
+    // FUNGSI CEK DETEKSI ORIENTASI LAYAR HP (PORTRAIT / LANDSCAPE)
+    function checkOrientationStatus() {
+      const warningOverlay = document.getElementById('mobile-landscape-warning');
+      if (!warningOverlay) return;
+
+      function updateOrientation() {
+        const isMobileWidth = window.innerWidth <= 932;
+        const isLandscape = window.matchMedia("(orientation: landscape)").matches || window.innerWidth > window.innerHeight;
+
+        if (isMobileWidth && isLandscape) {
+          warningOverlay.classList.remove('hidden');
+          warningOverlay.classList.add('flex');
+        } else {
+          warningOverlay.classList.remove('flex');
+          warningOverlay.classList.add('hidden');
+        }
+      }
+
+      window.addEventListener('resize', updateOrientation);
+      window.addEventListener('orientationchange', updateOrientation);
+      updateOrientation();
+    }
   </script>
 </body>
 </html>

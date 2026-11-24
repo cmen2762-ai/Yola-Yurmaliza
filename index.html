@@ -60,6 +60,19 @@
       width: 100vw;
       overflow-x: hidden;
     }
+
+    /* Tampilan Skala 70% Khusus saat dibuka di Browser Desktop / Laptop */
+    @media screen and (min-width: 768px) {
+      html {
+        font-size: 70%;
+      }
+      #app-sidebar {
+        width: 18rem;
+      }
+      #main-app-layout {
+        height: 100vh;
+      }
+    }
     
     /* Layout Adaptif Android & Touch Friendly */
     .android-container {
@@ -71,21 +84,132 @@
     
     .card-3d {
       background: #ffffff;
-      border-radius: 18px;
-      box-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.12), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
-      border: 1px solid rgba(226, 232, 240, 0.8);
-      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+      border-radius: 22px;
+      box-shadow: 0 8px 24px -4px rgba(2, 132, 199, 0.10), 0 2px 6px -1px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(226, 232, 240, 0.85);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      will-change: transform;
     }
     
     @media (max-width: 640px) {
       .card-3d {
-        border-radius: 14px;
+        border-radius: 18px;
       }
     }
     
     .card-3d:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 24px -8px rgba(2, 132, 199, 0.2), 0 8px 10px -4px rgba(0, 0, 0, 0.06);
+      transform: translateY(-3px) scale(1.005);
+      box-shadow: 0 16px 32px -8px rgba(2, 132, 199, 0.18), 0 6px 12px -4px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-3d:active {
+      transform: scale(0.985);
+      transition: transform 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* ========================================================================
+       iOS FLUID SPRING ANIMATIONS & GLASSMORPHISM PHYSICS
+       ======================================================================== */
+    :root {
+      --ios-spring: cubic-bezier(0.32, 0.72, 0, 1);
+      --ios-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ios-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    @keyframes iosSectionEnter {
+      0% {
+        opacity: 0;
+        transform: translateY(16px) scale(0.985);
+        filter: blur(4px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+        filter: blur(0);
+      }
+    }
+
+    @keyframes iosModalBackdropIn {
+      0% {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+      }
+      100% {
+        opacity: 1;
+        backdrop-filter: blur(12px);
+      }
+    }
+
+    @keyframes iosModalCardSpring {
+      0% {
+        opacity: 0;
+        transform: scale(0.88) translateY(24px);
+      }
+      70% {
+        opacity: 1;
+        transform: scale(1.015) translateY(-2px);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
+    }
+
+    @keyframes iosBottomSheetSlideUp {
+      0% {
+        opacity: 0;
+        transform: translateY(100%);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes iosListStaggerIn {
+      0% {
+        opacity: 0;
+        transform: translateX(-10px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .ios-section-animate {
+      animation: iosSectionEnter 0.45s var(--ios-spring) forwards;
+    }
+
+    .ios-modal-backdrop {
+      animation: iosModalBackdropIn 0.3s var(--ios-ease-out) forwards;
+    }
+
+    .ios-modal-card {
+      animation: iosModalCardSpring 0.42s var(--ios-spring) forwards;
+      will-change: transform, opacity;
+    }
+
+    @media (max-width: 640px) {
+      .ios-modal-card {
+        animation: iosBottomSheetSlideUp 0.38s var(--ios-spring) forwards;
+      }
+    }
+
+    /* iOS Tactile Press Button Physics */
+    button, .nav-pill, .mobile-tab-btn, a[onclick] {
+      transition: transform 0.22s var(--ios-spring), background-color 0.25s ease, box-shadow 0.25s ease, opacity 0.2s ease;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    button:active, .nav-pill:active, .mobile-tab-btn:active {
+      transform: scale(0.94);
+    }
+
+    /* Smooth Scroll Momentum ala iOS */
+    .overflow-y-auto, .overflow-x-auto {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
     }
 
     /* DETEKSI LAYAR HP MIRING (LANDSCAPE) */
@@ -133,7 +257,48 @@
     }
     .nav-pill {
       border-radius: 9999px;
-      transition: all 0.25s ease;
+      transition: all 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    .nav-pill:hover {
+      transform: translateX(4px);
+    }
+    .nav-pill.active {
+      background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
+      color: #ffffff;
+      transform: translateX(4px) scale(1.01);
+      box-shadow: 0 8px 20px rgba(2, 132, 199, 0.38), inset 0 1.5px 0 rgba(255, 255, 255, 0.28);
+    }
+    /* iOS WhatsApp Style Bottom Nav Items */
+    .mobile-tab-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: #64748b;
+      font-size: 10px;
+      font-weight: 700;
+      transition: all 0.32s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .mobile-tab-btn.active {
+      color: #2563eb;
+      transform: translateY(-2px);
+    }
+    .mobile-tab-btn.active .mobile-tab-icon {
+      background: #eff6ff;
+      color: #2563eb;
+      transform: scale(1.14);
+      box-shadow: 0 6px 14px rgba(37, 99, 235, 0.24);
+    }
+    .mobile-tab-icon {
+      width: 44px;
+      height: 30px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
     .nav-pill.active {
       background: linear-gradient(135deg, #0284c7 0%, #1d4ed8 100%);
@@ -197,6 +362,50 @@
         display: flex !important;
       }
     }
+
+    /* RUNNING TEXT LED MINIMARKET STYLE */
+    @keyframes ledMarqueeScroll {
+      0% {
+        transform: translateX(0%);
+      }
+      100% {
+        transform: translateX(-50%);
+      }
+    }
+
+    .led-marquee-container {
+      background: linear-gradient(180deg, #090d16 0%, #111827 50%, #090d16 100%);
+      border: 2px solid #1e293b;
+      box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.9), 0 4px 12px rgba(2, 132, 199, 0.18);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .led-marquee-container::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
+      background-size: 4px 4px;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .led-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: ledMarqueeScroll 14s linear infinite;
+    }
+
+    .led-marquee-container:hover .led-marquee-track {
+      animation-play-state: paused;
+    }
+
+    .led-marquee-text {
+      color: #38bdf8;
+      text-shadow: 0 0 6px rgba(56, 189, 248, 0.85), 0 0 14px rgba(14, 165, 233, 0.55);
+      letter-spacing: 0.08em;
+    }
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 font-sans antialiased">
@@ -233,6 +442,25 @@
     <div id="toast-content" class="px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold text-white bg-blue-600/90 border border-blue-400/30 backdrop-blur-md">
       <i id="toast-icon" class="fa-solid fa-circle-check text-lg"></i>
       <span id="toast-message">Memproses data...</span>
+    </div>
+  </div>
+
+  <!-- BANNER PERINGATAN STATUS KONEKSI (OFFLINE / JARINGAN BURUK / ONLINE KEMBALI) -->
+  <div id="network-status-banner" class="fixed top-3 left-1/2 -translate-x-1/2 z-[190] w-[92%] max-w-lg hidden transition-all duration-300 transform -translate-y-4 opacity-0">
+    <div id="network-banner-box" class="px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl">
+      <div class="flex items-center gap-3">
+        <div id="network-banner-icon-wrap" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0">
+          <i id="network-banner-icon" class="fa-solid fa-wifi"></i>
+        </div>
+        <div>
+          <p id="network-banner-title" class="text-xs sm:text-sm font-black tracking-tight leading-tight">Status Jaringan</p>
+          <p id="network-banner-desc" class="text-[11px] font-medium leading-snug mt-0.5">Memeriksa koneksi internet...</p>
+        </div>
+      </div>
+      <button type="button" onclick="checkNetworkQualityNow(true)" title="Periksa Ulang Jaringan" class="px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/30 text-[11px] font-extrabold transition flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+        <i class="fa-solid fa-rotate"></i>
+        <span class="hidden sm:inline">Cek</span>
+      </button>
     </div>
   </div>
 
@@ -291,9 +519,24 @@
 
       <!-- FORM SECTION RIGHT (COMPACT ON MOBILE) -->
       <div class="p-5 sm:p-8 md:p-12 flex flex-col justify-center bg-white space-y-4 sm:space-y-6">
+        
+        <!-- RUNNING TEXT LED ALA MINIMARKET -->
+        <div class="led-marquee-container rounded-xl py-2 px-1 select-none">
+          <div class="led-marquee-track">
+            <div class="flex items-center gap-6 px-3 whitespace-nowrap text-xs sm:text-sm font-black uppercase led-marquee-text">
+              <span>★ Selamat Datang Aplikasi Yola Yurmaliza, S.Pd. ★</span>
+              <span class="text-amber-400" style="text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);">● Sistem Administrasi Guru Kelas & Presensi QR Code ●</span>
+            </div>
+            <div class="flex items-center gap-6 px-3 whitespace-nowrap text-xs sm:text-sm font-black uppercase led-marquee-text" aria-hidden="true">
+              <span>★ Selamat Datang Aplikasi Yola Yurmaliza, S.Pd. ★</span>
+              <span class="text-amber-400" style="text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);">● Sistem Administrasi Guru Kelas & Presensi QR Code ●</span>
+            </div>
+          </div>
+        </div>
+
         <div class="text-center sm:text-left space-y-1">
           <div class="sm:hidden inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-blue-50 text-blue-700 text-[10px] font-bold mb-1 border border-blue-200">
-            <i class="fa-solid fa-graduation-cap"></i> Yola Yurmaliza, S.Pd
+            <i class="fa-solid fa-graduation-cap"></i> ADMOPS Mobile
           </div>
           <h3 class="text-xl sm:text-2xl font-black text-slate-800 tracking-tight">Sign In Aplikasi</h3>
           <p class="text-[11px] sm:text-xs text-slate-500 font-medium">Masukan kredensial untuk mengakses sistem kelas</p>
@@ -351,7 +594,7 @@
         </form>
 
         <div class="pt-2 sm:pt-4 border-t border-slate-100 text-center">
-          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">Aplikasi Administrasi Guru</p>
+          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">ADMOPS Mobile v2.6</p>
         </div>
       </div>
     </div>
@@ -401,6 +644,14 @@
           <a href="#" onclick="switchNav('siswa')" id="nav-siswa" class="nav-pill flex items-center gap-3.5 px-5 py-3 font-bold text-sm text-slate-700 hover:text-blue-700 hover:bg-white/70">
             <i class="fa-solid fa-user-graduate text-lg w-5 text-center"></i>
             <span>Data Siswa</span>
+          </a>
+
+          <a href="#" onclick="switchNav('pesan')" id="nav-pesan" class="nav-pill flex items-center justify-between px-5 py-3 font-bold text-sm text-slate-700 hover:text-blue-700 hover:bg-white/70">
+            <div class="flex items-center gap-3.5">
+              <i class="fa-solid fa-envelope-open-text text-lg w-5 text-center"></i>
+              <span>Pesan</span>
+            </div>
+            <span id="badge-pesan-unread" class="hidden px-2 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-black shadow-sm animate-pulse">0</span>
           </a>
 
           <a href="#" onclick="switchNav('sekolah')" id="nav-sekolah" class="nav-pill flex items-center gap-3.5 px-5 py-3 font-bold text-sm text-slate-700 hover:text-blue-700 hover:bg-white/70">
@@ -525,6 +776,13 @@
         </div>
 
         <div class="flex items-center gap-2 md:gap-4">
+          <!-- INDIKATOR KONEKSI REAL-TIME (ONLINE / JARINGAN BURUK / OFFLINE) -->
+          <button type="button" onclick="checkNetworkQualityNow(true)" id="network-header-pill" title="Klik untuk cek kualitas jaringan" class="bg-emerald-50 text-emerald-800 px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-extrabold flex items-center gap-1.5 border border-emerald-200 shadow-sm transition cursor-pointer">
+            <i id="network-header-icon" class="fa-solid fa-wifi text-emerald-600"></i>
+            <span id="network-header-text">Online</span>
+            <span id="network-header-ping" class="hidden sm:inline text-[9px] font-mono opacity-80"></span>
+          </button>
+
           <div id="sync-status-badge" class="bg-emerald-50 text-emerald-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-emerald-200">
             <span class="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse" id="sync-status-dot"></span>
             <span id="sync-status-text">Terhubung</span>
@@ -726,46 +984,121 @@
           <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
               <h3 class="text-xl font-bold text-slate-800">Daftar Data Siswa & QR Code Presensi</h3>
-              <p class="text-xs text-slate-500">Kelola informasi peserta didik dan cetak Kartu QR Presensi</p>
+              <p class="text-xs text-slate-500">Data siswa ditarik langsung dari server utama ADMOPS (SDN 22 Tanah Keras) untuk cetak Kartu QR Presensi</p>
             </div>
             <div class="flex items-center gap-3 self-start md:self-auto flex-wrap">
               <!-- TOMBOL CETAK SEMUA KARTU F4 (TAMPIL DI TABLET & LAPTOP / MD UP) -->
               <button type="button" onclick="printAllQrCardsF4()" class="hidden md:inline-flex bg-purple-700 hover:bg-purple-800 text-white font-extrabold px-4 py-2.5 rounded-xl items-center gap-2 text-sm shadow-md transition transform hover:scale-105 active:scale-95 cursor-pointer border border-purple-500">
                 <i class="fa-solid fa-print text-base"></i>
-                <span>Cetak Semua Kartu</span>
+                <span>Cetak Semua Kartu (F4 - 4/Lembar)</span>
               </button>
-              <button type="button" onclick="openModalTarikSiswa()" class="bg-teal-600 hover:bg-teal-700 text-white font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 text-sm shadow-md transition transform hover:scale-105 active:scale-95 cursor-pointer">
+              <button type="button" onclick="openModalTarikSiswa()" class="btn-3d-primary text-white font-extrabold px-5 py-2.5 rounded-xl flex items-center gap-2 text-sm shadow-md transition transform hover:scale-105 active:scale-95 cursor-pointer">
                 <i class="fa-solid fa-cloud-arrow-down text-base"></i>
-                <span>Tarik Data Siswa</span>
-              </button>
-              <button type="button" onclick="openModalSiswa()" class="btn-3d-primary text-white font-bold px-5 py-2.5 rounded-xl flex items-center gap-2 text-sm cursor-pointer">
-                <i class="fa-solid fa-plus"></i> Tambah Data Siswa
+                <span>Tarik Data Siswa dari ADMOPS</span>
               </button>
             </div>
           </div>
 
+          <div class="bg-blue-50/80 border border-blue-200 rounded-2xl p-3.5 flex items-center gap-3 text-xs text-blue-900">
+            <i class="fa-solid fa-circle-info text-blue-600 text-base"></i>
+            <div>
+              <span class="font-extrabold">Mode Sinkronisasi Server ADMOPS:</span> Penambahan, perubahan, atau penghapusan data pokok siswa dilakukan melalui aplikasi utama <b>ADMOPS (SDN 22 Tanah Keras)</b>. Gunakan tombol <b>Tarik Data Siswa dari ADMOPS</b> untuk memperbarui daftar siswa di kelas Anda.
+            </div>
+          </div>
+
           <div class="card-3d overflow-hidden">
-            <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
-              <span class="text-xs font-bold text-slate-500 uppercase">Tabel Siswa & Kartu QR</span>
-              <input type="text" id="search-siswa" onkeyup="renderSiswaTable()" placeholder="Cari Siswa / NISN..." class="px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-60">
+            <div class="p-4 border-b border-slate-100 bg-slate-50/50 flex flex-col sm:flex-row justify-between items-center gap-3">
+              <span class="text-xs font-bold text-slate-500 uppercase">Tabel Siswa & Kartu QR (Sinkron Server ADMOPS)</span>
+              <input type="text" id="search-siswa" onkeyup="renderSiswaTable()" placeholder="Cari Nama / NISN / NIS / Kelas..." class="px-3 py-1.5 text-xs rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full sm:w-64">
             </div>
             <div class="overflow-x-auto">
               <table class="w-full text-left border-collapse text-sm">
                 <thead>
                   <tr class="bg-slate-100 text-slate-600 uppercase text-xs tracking-wider border-b border-slate-200">
-                    <th class="py-3.5 px-4 font-bold">No</th>
-                    <th class="py-3.5 px-4 font-bold">Nama Siswa</th>
+                    <th class="py-3.5 px-4 font-bold w-12">No</th>
+                    <th class="py-3.5 px-4 font-bold">Nama</th>
                     <th class="py-3.5 px-4 font-bold">NISN / NIS</th>
                     <th class="py-3.5 px-4 font-bold">Kelas</th>
-                    <th class="py-3.5 px-4 font-bold">TTL</th>
-                    <th class="py-3.5 px-4 font-bold">L/P</th>
+                    <th class="py-3.5 px-4 font-bold">TTL (Tempat, Tanggal Lahir)</th>
+                    <th class="py-3.5 px-4 font-bold text-center">Jenis Kelamin</th>
                     <th class="py-3.5 px-4 font-bold text-center">Kartu QR</th>
-                    <th class="py-3.5 px-4 font-bold text-center">Aksi</th>
                   </tr>
                 </thead>
                 <tbody id="tbody-siswa" class="divide-y divide-slate-100"></tbody>
               </table>
             </div>
+          </div>
+        </section>
+
+        <!-- 2B. PESAN & NOTIFIKASI OTOMATIS PERUBAHAN DATA ADMOPS -->
+        <section id="section-pesan" class="hidden space-y-5">
+          <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+            <div>
+              <h3 class="text-xl sm:text-2xl font-black text-slate-800 flex items-center gap-2.5 tracking-tight">
+                <i class="fa-solid fa-bell text-amber-500 text-2xl"></i>
+                <span>Pesan & Notifikasi Perubahan Siswa ADMOPS</span>
+              </h3>
+              <p class="text-xs sm:text-sm text-slate-500 font-medium mt-0.5">Deteksi otomatis mutasi siswa, siswa naik kelas, atau perubahan data dari server ADMOPS.</p>
+            </div>
+            <div class="flex items-center gap-2.5 flex-wrap">
+              <button type="button" onclick="cekPerubahanDataAdmops(true)" class="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs shadow-md transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-arrows-rotate"></i>
+                <span>Cek Pembaruan ADMOPS</span>
+              </button>
+              <button type="button" onclick="tandaiSemuaPesanDibaca()" class="bg-slate-200/80 hover:bg-slate-200 text-slate-700 font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-check-double text-slate-600"></i>
+                <span>Tandai Dibaca</span>
+              </button>
+              <button type="button" onclick="hapusSemuaPesan()" class="bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 font-bold px-4 py-2.5 rounded-xl flex items-center gap-2 text-xs transition active:scale-95 cursor-pointer">
+                <i class="fa-solid fa-trash-can"></i>
+                <span>Bersihkan</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- BANNER RINGKASAN NOTIFIKASI TARIK ULANG DATA SISWA -->
+          <div id="banner-tarik-ulang-siswa" class="hidden bg-gradient-to-r from-amber-500 via-orange-500 to-orange-600 rounded-2xl p-4 sm:p-5 text-white shadow-lg flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+            <div class="flex items-center gap-4">
+              <div class="w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-2xl flex-shrink-0 shadow-inner">
+                <i class="fa-solid fa-triangle-exclamation"></i>
+              </div>
+              <div class="space-y-1">
+                <h4 class="font-black text-base sm:text-lg tracking-tight">Perubahan Data Siswa Terdeteksi di Aplikasi ADMOPS!</h4>
+                <p class="text-xs sm:text-[13px] text-amber-50 font-medium leading-relaxed" id="banner-tarik-ulang-desc">
+                  Terdapat perubahan status siswa (Mutasi / Naik Kelas / Siswa Baru) pada server ADMOPS. Silakan lakukan Tarik Ulang Data Siswa agar data kelas selalu sinkron.
+                </p>
+              </div>
+            </div>
+            <button type="button" onclick="openModalTarikSiswa()" class="bg-slate-900 hover:bg-slate-800 text-white font-extrabold px-5 py-3 rounded-xl text-xs shadow-lg flex items-center gap-2 whitespace-nowrap self-end md:self-center transition active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-cloud-arrow-down text-amber-400 text-sm"></i>
+              <span>Tarik Ulang Data Siswa Sekarang</span>
+            </button>
+          </div>
+
+          <!-- BAR FILTER TAB KATEGORI PESAN & TIMESTAMP -->
+          <div class="bg-white rounded-2xl p-3 sm:p-3.5 shadow-sm border border-slate-200/80 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-2 flex-wrap">
+              <button type="button" onclick="setFilterPesanTab('ALL')" id="tab-pesan-ALL" class="px-4 py-2 rounded-xl text-xs font-extrabold transition bg-emerald-900 text-white shadow-sm cursor-pointer">
+                Semua Pesan
+              </button>
+              <button type="button" onclick="setFilterPesanTab('MUTASI')" id="tab-pesan-MUTASI" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">
+                Mutasi / Keluar
+              </button>
+              <button type="button" onclick="setFilterPesanTab('NAIK_KELAS')" id="tab-pesan-NAIK_KELAS" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">
+                Naik Kelas
+              </button>
+              <button type="button" onclick="setFilterPesanTab('SISWA_BARU')" id="tab-pesan-SISWA_BARU" class="px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer">
+                Siswa Baru
+              </button>
+            </div>
+            <div class="text-xs text-slate-400 font-semibold px-1" id="pesan-last-checked-text">
+              Terakhir diperiksa: -
+            </div>
+          </div>
+
+          <!-- DAFTAR KARTU PESAN MASUK -->
+          <div id="container-daftar-pesan" class="space-y-3">
+            <!-- Diisi otomatis via JavaScript -->
           </div>
         </section>
 
@@ -1630,9 +1963,9 @@
   <div id="modal-tarik-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 transition-all">
     <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-md overflow-hidden p-6 space-y-6">
       <div class="flex justify-between items-center border-b pb-4">
-        <div class="flex items-center gap-2.5 text-teal-700 font-extrabold text-base">
-          <i class="fa-solid fa-cloud-arrow-down text-xl"></i>
-          <span>Tarik Data Siswa dari Server</span>
+        <div class="flex items-center gap-2.5 text-blue-800 font-extrabold text-base">
+          <i class="fa-solid fa-cloud-arrow-down text-xl text-blue-600"></i>
+          <span>Tarik Data Siswa dari Server ADMOPS</span>
         </div>
         <button onclick="closeModal('modal-tarik-siswa')" class="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center">
           <i class="fa-solid fa-xmark"></i>
@@ -1640,20 +1973,21 @@
       </div>
 
       <div class="space-y-4">
-        <p class="text-xs text-slate-600 font-medium leading-relaxed">
-          Pilih filter kelas untuk mengunduh dan menyinkronkan data siswa langsung dari database Google Sheets ADMOPS:
-        </p>
+        <div class="p-3.5 rounded-2xl bg-amber-50 border border-amber-200 text-xs text-amber-900 space-y-1">
+          <p class="font-extrabold flex items-center gap-1.5"><i class="fa-solid fa-school text-amber-700"></i> Server Utama: ADMOPS SDN 22 Tanah Keras</p>
+          <p class="text-[11px] leading-relaxed">Data yang ditarik mencakup: <b>Nama, NISN / NIS, Kelas, TTL, dan Jenis Kelamin</b> sesuai database PD Aktif sekolah.</p>
+        </div>
 
         <div>
-          <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Pilih Filter Kelas</label>
-          <select id="tarik-siswa-kelas-select" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold text-slate-800 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-teal-500">
+          <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Pilih Filter Kelas yang Akan Ditarik</label>
+          <select id="tarik-siswa-kelas-select" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm font-semibold text-slate-800 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500">
             <option value="ALL">-- Semua Kelas (Kelas 1 - 6) --</option>
-            <option value="1">Kelas 1</option>
-            <option value="2">Kelas 2</option>
-            <option value="3">Kelas 3</option>
-            <option value="4">Kelas 4</option>
-            <option value="5">Kelas 5</option>
-            <option value="6">Kelas 6</option>
+            <option value="Kelas 1">Kelas 1</option>
+            <option value="Kelas 2">Kelas 2</option>
+            <option value="Kelas 3">Kelas 3</option>
+            <option value="Kelas 4">Kelas 4</option>
+            <option value="Kelas 5">Kelas 5</option>
+            <option value="Kelas 6">Kelas 6</option>
           </select>
         </div>
       </div>
@@ -1662,9 +1996,9 @@
         <button type="button" onclick="closeModal('modal-tarik-siswa')" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-600 font-bold text-xs hover:bg-slate-100">
           Batal
         </button>
-        <button type="button" onclick="executeTarikSiswaData()" class="bg-teal-600 hover:bg-teal-700 text-white font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md transition flex items-center gap-2">
+        <button type="button" onclick="executeTarikSiswaData()" class="btn-3d-primary text-white font-extrabold px-6 py-2.5 rounded-xl text-xs shadow-md transition flex items-center gap-2">
           <i class="fa-solid fa-sync"></i>
-          <span>Tarik & Sinkron Data</span>
+          <span>Tarik & Sinkronkan Sekarang</span>
         </button>
       </div>
     </div>
@@ -1792,62 +2126,6 @@
           Ya, Keluar
         </button>
       </div>
-    </div>
-  </div>
-
-  <!-- MODAL SISWA -->
-  <div id="modal-siswa" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center z-50 p-4 overflow-y-auto">
-    <div class="bg-white rounded-3xl shadow-2xl border border-slate-100 w-full max-w-xl overflow-hidden transform transition-all my-8">
-      <div class="bg-gradient-to-r from-blue-700 to-indigo-800 px-8 py-5 text-white flex justify-between items-center">
-        <div class="flex items-center gap-3">
-          <i class="fa-solid fa-user-graduate text-2xl"></i>
-          <div>
-            <h3 class="text-xl font-bold">Form Data Siswa</h3>
-            <p class="text-xs text-blue-200">Lengkapi data peserta didik</p>
-          </div>
-        </div>
-        <button onclick="closeModal('modal-siswa')" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition">
-          <i class="fa-solid fa-xmark text-lg"></i>
-        </button>
-      </div>
-      <form id="form-siswa" onsubmit="saveSiswa(event)" class="p-8 space-y-4">
-        <input type="hidden" id="siswa-id-edit" value="">
-        <div>
-          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Nama Lengkap Siswa *</label>
-          <input type="text" id="siswa-nama" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium">
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">NISN / NIS *</label>
-            <input type="text" id="siswa-nisn" required class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Kelas *</label>
-            <input type="text" id="siswa-kelas" required placeholder="Contoh: 5A" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium">
-          </div>
-        </div>
-        <div class="grid grid-cols-2 gap-4">
-          <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tempat Lahir</label>
-            <input type="text" id="siswa-tempat" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium">
-          </div>
-          <div>
-            <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tanggal Lahir</label>
-            <input type="date" id="siswa-tgl" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium">
-          </div>
-        </div>
-        <div>
-          <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Jenis Kelamin</label>
-          <select id="siswa-jk" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm font-medium bg-white">
-            <option value="L">Laki-laki (L)</option>
-            <option value="P">Perempuan (P)</option>
-          </select>
-        </div>
-        <div class="pt-4 border-t flex justify-end gap-3">
-          <button type="button" onclick="closeModal('modal-siswa')" class="px-5 py-2.5 rounded-xl border text-slate-600 text-sm font-bold">Batal</button>
-          <button type="submit" class="btn-3d-primary text-white font-bold px-6 py-2.5 rounded-xl text-sm">Simpan Siswa</button>
-        </div>
-      </form>
     </div>
   </div>
 
@@ -2460,6 +2738,10 @@
         toastContent.className = "px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold text-white bg-red-600/90 border border-red-400/30 backdrop-blur-md";
         toastIcon.className = "fa-solid fa-triangle-exclamation text-lg text-red-200";
         toastMsg.innerText = message || "Gagal Memproses Data";
+      } else if (type === 'warning-net') {
+        toastContent.className = "px-5 py-3.5 rounded-2xl shadow-2xl flex items-center gap-3 text-sm font-bold text-white bg-amber-600/95 border border-amber-300/40 backdrop-blur-md";
+        toastIcon.className = "fa-solid fa-signal text-lg text-amber-200 animate-pulse";
+        toastMsg.innerText = message || "Jaringan Buruk / Lambat!";
       }
 
       toastEl.classList.remove('hidden');
@@ -2482,6 +2764,7 @@
     // Global Live Data
     let appData = {
       siswa: [],
+      pesan: [],
       sekolah: { nama: '', kota: '', kepsek: '', nip: '' },
       walas: { nama: '', nip: '' },
       mapel: [],
@@ -2499,12 +2782,44 @@
 
     function openModal(modalId) {
       const m = document.getElementById(modalId);
-      if (m) m.classList.remove('hidden');
+      if (m) {
+        m.classList.remove('hidden');
+        m.classList.remove('ios-modal-backdrop');
+        void m.offsetWidth;
+        m.classList.add('ios-modal-backdrop');
+
+        const innerCard = m.firstElementChild;
+        if (innerCard) {
+          innerCard.classList.remove('ios-modal-card');
+          void innerCard.offsetWidth;
+          innerCard.classList.add('ios-modal-card');
+        }
+      }
     }
 
     function closeModal(modalId) {
       const m = document.getElementById(modalId);
-      if (m) m.classList.add('hidden');
+      if (m) {
+        const innerCard = m.firstElementChild;
+        if (innerCard) {
+          innerCard.style.transition = 'transform 0.22s cubic-bezier(0.32, 0.72, 0, 1), opacity 0.2s ease';
+          innerCard.style.transform = 'scale(0.94) translateY(10px)';
+          innerCard.style.opacity = '0';
+        }
+        m.style.transition = 'opacity 0.22s ease';
+        m.style.opacity = '0';
+
+        setTimeout(() => {
+          m.classList.add('hidden');
+          m.style.opacity = '';
+          m.style.transition = '';
+          if (innerCard) {
+            innerCard.style.transform = '';
+            innerCard.style.opacity = '';
+            innerCard.style.transition = '';
+          }
+        }, 210);
+      }
     }
 
     function toggleMobileSidebar(show) {
@@ -2512,12 +2827,22 @@
       const backdrop = document.getElementById('mobile-sidebar-backdrop');
       if (!sidebar || !backdrop) return;
 
+      sidebar.style.transition = 'transform 0.42s cubic-bezier(0.32, 0.72, 0, 1)';
       if (show) {
         sidebar.classList.remove('-translate-x-full');
         backdrop.classList.remove('hidden');
+        backdrop.style.opacity = '0';
+        backdrop.style.transition = 'opacity 0.35s ease';
+        requestAnimationFrame(() => {
+          backdrop.style.opacity = '1';
+        });
       } else {
         sidebar.classList.add('-translate-x-full');
-        backdrop.classList.add('hidden');
+        backdrop.style.opacity = '0';
+        setTimeout(() => {
+          backdrop.classList.add('hidden');
+          backdrop.style.opacity = '';
+        }, 320);
       }
     }
 
@@ -2636,7 +2961,7 @@
       toggleMobileSidebar(false);
 
       const sections = [
-        'beranda', 'siswa', 'sekolah', 'walas', 'mapel', 'tapel', 
+        'beranda', 'siswa', 'pesan', 'sekolah', 'walas', 'mapel', 'tapel', 
         'kategori', 'penilaian', 'absensi', 'total-absensi', 'jurnal', 'kopsurat', 'ttd', 'backup'
       ];
 
@@ -2657,13 +2982,19 @@
       const targetNav = document.getElementById('nav-' + navId);
       const targetMobileTab = document.getElementById('mobile-tab-' + navId);
 
-      if (targetSec) targetSec.classList.remove('hidden');
+      if (targetSec) {
+        targetSec.classList.remove('hidden');
+        targetSec.classList.remove('ios-section-animate');
+        void targetSec.offsetWidth;
+        targetSec.classList.add('ios-section-animate');
+      }
       if (targetNav) targetNav.classList.add('active');
       if (targetMobileTab) targetMobileTab.classList.add('active');
 
       const pageTitles = {
         beranda: 'Beranda',
         siswa: 'Data Siswa & Kartu QR',
+        pesan: 'Pesan & Notifikasi ADMOPS',
         sekolah: 'Data Sekolah',
         walas: 'Wali Kelas',
         mapel: 'Mata Pelajaran',
@@ -2689,7 +3020,9 @@
 
     function renderActiveView() {
       updateDashboardData();
+      updateBadgePesan();
       if (currentNav === 'siswa') renderSiswaTable();
+      else if (currentNav === 'pesan') renderPesanList();
       else if (currentNav === 'mapel') renderMapelTable();
       else if (currentNav === 'tapel') renderTapelTable();
       else if (currentNav === 'kategori') renderKategoriTable();
@@ -2801,6 +3134,7 @@
           const remote = res.data;
           
           appData.siswa = remote.siswa || [];
+          appData.pesan = Array.isArray(remote.pesan) ? remote.pesan : [];
           appData.sekolah = remote.sekolah || { nama: '', kota: '', kepsek: '', nip: '' };
           appData.walas = remote.walas || { nama: '', nip: '' };
           appData.mapel = remote.mapel || [];
@@ -2814,7 +3148,11 @@
 
           updateSyncBadge('connected', 'Terhubung');
           updateDashboardData();
+          updateBadgePesan();
           renderActiveView();
+
+          // Cek otomatis perbedaan data siswa dengan server pusat ADMOPS
+          cekPerubahanDataAdmops(false);
           return remote;
         }
         throw new Error("Invalid response format");
@@ -2883,28 +3221,48 @@
     }
 
     function updateSyncBadge(status, text) {
+      const badge = document.getElementById('sync-status-badge');
       const dot = document.getElementById('sync-status-dot');
-      const badgeText = document.getElementById('sync-status-text');
-      const badgeContainer = document.getElementById('sync-status-badge');
+      const label = document.getElementById('sync-status-text');
+      if (!badge || !dot || !label) return;
 
-      if (!dot || !badgeText || !badgeContainer) return;
-
+      label.innerText = text;
       if (status === 'connected') {
-        badgeContainer.className = "bg-emerald-50 text-emerald-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-emerald-200";
+        badge.className = "bg-emerald-50 text-emerald-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-emerald-200";
         dot.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-emerald-500 animate-pulse";
-        badgeText.innerText = text || "Terhubung";
       } else if (status === 'syncing') {
-        badgeContainer.className = "bg-blue-50 text-blue-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-blue-200";
-        dot.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-blue-500 animate-spin";
-        badgeText.innerText = text || "Menyinkronkan...";
+        badge.className = "bg-blue-50 text-blue-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-blue-200";
+        dot.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-blue-500 animate-ping";
       } else {
-        badgeContainer.className = "bg-red-50 text-red-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-red-200";
+        badge.className = "bg-red-50 text-red-800 px-2.5 md:px-3 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-bold flex items-center gap-1.5 md:gap-2 border border-red-200";
         dot.className = "w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-red-500";
-        badgeText.innerText = text || "Offline";
       }
     }
 
-    // 1. DATA SISWA MODULE
+    // 1. DATA SISWA MODULE (HANYA TARIK DATA DARI SERVER ADMOPS)
+    function formatTtlSiswa(s) {
+      if (s.ttl && String(s.ttl).trim() !== '') return s.ttl;
+      const tempat = (s.tempatLahir || '').trim();
+      let tgl = (s.tglLahir || '').trim();
+      if (tgl && /^\d{4}-\d{2}-\d{2}$/.test(tgl)) {
+        const parts = tgl.split('-');
+        const bulanIndo = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+        const bIdx = parseInt(parts[1], 10) - 1;
+        if (bulanIndo[bIdx]) {
+          tgl = `${parseInt(parts[2], 10)} ${bulanIndo[bIdx]} ${parts[0]}`;
+        }
+      }
+      if (tempat && tgl) return `${tempat}, ${tgl}`;
+      return tempat || tgl || '-';
+    }
+
+    function formatJenisKelaminSiswa(jkRaw) {
+      const val = String(jkRaw || '').trim().toUpperCase();
+      if (val === 'L' || val.startsWith('LAKI')) return 'Laki-laki (L)';
+      if (val === 'P' || val.startsWith('PEREMPUAN')) return 'Perempuan (P)';
+      return jkRaw || '-';
+    }
+
     function renderSiswaTable() {
       const tbody = document.getElementById('tbody-siswa');
       if (!tbody) return;
@@ -2915,38 +3273,40 @@
       const filtered = appData.siswa.filter(s => 
         (s.nama || '').toLowerCase().includes(searchKey) || 
         (s.nisn || '').toLowerCase().includes(searchKey) ||
+        (s.nis || '').toLowerCase().includes(searchKey) ||
         (s.kelas || '').toLowerCase().includes(searchKey)
       );
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" class="py-8 text-center text-slate-400 font-medium text-xs">Belum ada data siswa terdaftar.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="7" class="py-8 text-center text-slate-400 font-medium text-xs">Belum ada data siswa. Klik tombol <b>Tarik Data Siswa dari ADMOPS</b> di atas untuk mengambil data siswa.</td></tr>`;
         return;
       }
 
       filtered.forEach((s, idx) => {
+        const nisnNisDisplay = (s.nisn && s.nis && String(s.nisn) !== String(s.nis))
+          ? `${s.nisn} / ${s.nis}`
+          : (s.nisn || s.nis || '-');
+        const ttlDisplay = formatTtlSiswa(s);
+        const jkDisplay = formatJenisKelaminSiswa(s.jk || s.jenisKelamin);
+        const isPerempuan = jkDisplay.includes('(P)');
+
         const tr = document.createElement('tr');
         tr.className = "hover:bg-slate-50 transition border-b border-slate-100 text-xs";
         tr.innerHTML = `
           <td class="py-3 px-4 font-bold text-slate-500">${idx + 1}</td>
           <td class="py-3 px-4 font-extrabold text-slate-800">${s.nama || '-'}</td>
-          <td class="py-3 px-4 font-semibold text-slate-600">${s.nisn || '-'}</td>
+          <td class="py-3 px-4 font-semibold text-slate-600 font-mono">${nisnNisDisplay}</td>
           <td class="py-3 px-4 font-bold text-blue-600">${s.kelas || '-'}</td>
-          <td class="py-3 px-4 text-slate-600">${s.tempatLahir ? `${s.tempatLahir}, ` : ''}${s.tglLahir || '-'}</td>
-          <td class="py-3 px-4 font-bold text-slate-700">${s.jk || 'L'}</td>
+          <td class="py-3 px-4 text-slate-600">${ttlDisplay}</td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2.5 py-1 rounded-full font-bold text-[11px] ${isPerempuan ? 'bg-pink-50 text-pink-700 border border-pink-200' : 'bg-sky-50 text-sky-700 border border-sky-200'}">
+              ${jkDisplay}
+            </span>
+          </td>
           <td class="py-3 px-4 text-center">
             <button onclick="openModalPrintQrCard(${s.id})" class="px-3 py-1.5 rounded-xl bg-purple-50 hover:bg-purple-100 text-purple-700 font-extrabold text-[11px] inline-flex items-center gap-1.5 transition border border-purple-200">
               <i class="fa-solid fa-qrcode"></i> Kartu QR
             </button>
-          </td>
-          <td class="py-3 px-4 text-center">
-            <div class="flex items-center justify-center gap-2">
-              <button onclick="editSiswa(${s.id})" class="w-8 h-8 rounded-lg bg-blue-50 hover:bg-blue-100 text-blue-600 flex items-center justify-center transition" title="Edit">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button onclick="deleteSiswa(${s.id})" class="w-8 h-8 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 flex items-center justify-center transition" title="Hapus">
-                <i class="fa-solid fa-trash-can"></i>
-              </button>
-            </div>
           </td>
         `;
         tbody.appendChild(tr);
@@ -3526,98 +3886,487 @@
 
       showToast('loading-save', 'Menarik & menyinkronkan data siswa dari ADMOPS...');
 
-      const admopsUrl = 'https://script.google.com/macros/s/AKfycbyA_-hLaFQozmvIB0RNlAIu-xrG5ZysnWsgrEd4VNPt6mZ62Q-KiQGWUie9ds89g3GhWw/exec?t=' + Date.now();
+      // Endpoint Server ADMOPS Utama (SDN 22 Tanah Keras)
+      const admopsUrl = 'https://script.google.com/macros/s/AKfycbyA_-hLaFQozmvIB0RNlAIu-xrG5ZysnWsgrEd4VNPt6mZ62Q-KiQGWUie9ds89g3GhWw/exec?action=tarik_siswa&t=' + Date.now();
 
       fetch(admopsUrl)
         .then(res => res.json())
         .then(res => {
-          if (res && res.status === 'success' && res.data && Array.isArray(res.data.siswa)) {
-            let fetchedStudents = res.data.siswa;
+          // Mendukung struktur data ADMOPS (baik res.data.siswa, res.data.pdAktif, maupun array langsung res.data)
+          let rawList = [];
+          if (res && res.status === 'success' && res.data) {
+            if (Array.isArray(res.data.siswa)) rawList = res.data.siswa;
+            else if (Array.isArray(res.data.pdAktif)) rawList = res.data.pdAktif;
+            else if (Array.isArray(res.data)) rawList = res.data;
+          } else if (Array.isArray(res)) {
+            rawList = res;
+          }
 
-            if (selectedKelas && selectedKelas !== 'ALL') {
-              fetchedStudents = fetchedStudents.filter(s => {
-                const k = (s.kelas || '').toString().toLowerCase();
-                return k.includes(selectedKelas.toLowerCase());
-              });
-            }
+          if (rawList.length > 0) {
+            let fetchedStudents = rawList.filter(s => {
+              // Pastikan hanya menarik PD Aktif (bukan PD Keluar jika ada status keluar)
+              if (s.statusKeluar || s.jenisKeluar) return false;
+              if (!selectedKelas || selectedKelas === 'ALL') return true;
+              const k = (s.kelas || '').toString().toLowerCase().trim();
+              const filterNorm = selectedKelas.toLowerCase().trim();
+              const numOnly = filterNorm.replace('kelas ', '').trim();
+              return k === filterNorm || k === numOnly || k.includes(filterNorm);
+            });
 
-            let addedCount = 0;
-            let updatedCount = 0;
+            // Ganti/sinkronkan daftar siswa kelas dengan data resmi dari server ADMOPS
+            const syncedList = [];
+            let countSynced = 0;
 
-            fetchedStudents.forEach(newS => {
-              const studentName = newS.nama || newS.namaSiswa || newS.nama_lengkap || '';
+            fetchedStudents.forEach((newS, idx) => {
+              const studentName = (newS.nama || newS.namaSiswa || newS.nama_lengkap || '').trim();
               if (!studentName) return;
 
-              const studentNisn = newS.nisn || newS.nis || '';
-              const studentKelas = newS.kelas || '';
-              const studentJk = newS.jenisKelamin ? (newS.jenisKelamin.toLowerCase().startsWith('p') ? 'P' : 'L') : (newS.jk || 'L');
+              const studentNisn = String(newS.nisn || '').trim();
+              const studentNis = String(newS.nis || '').trim();
+              const combinedNisnNis = (studentNisn && studentNis && studentNisn !== studentNis)
+                ? `${studentNisn} / ${studentNis}`
+                : (studentNisn || studentNis || '');
 
-              let fetchedTempatLahir = newS.tempatLahir || newS.tempat_lahir || newS.tempat || '';
-              let fetchedTglLahir = newS.tglLahir || newS.tgl_lahir || newS.tanggalLahir || newS.tanggal_lahir || newS.tgl || '';
+              const studentKelas = String(newS.kelas || '').trim();
 
-              if ((!fetchedTempatLahir || !fetchedTglLahir) && (newS.ttl || newS.tempatTanggalLahir)) {
-                const rawTtl = newS.ttl || newS.tempatTanggalLahir || '';
-                if (rawTtl.includes(',')) {
-                  const parts = rawTtl.split(',');
+              // Normalisasi Jenis Kelamin (L / P / Laki-laki / Perempuan)
+              const rawJk = String(newS.jk || newS.jenisKelamin || newS.jenis_kelamin || 'L').trim();
+              const studentJk = rawJk.toLowerCase().startsWith('p') ? 'P' : 'L';
+
+              // Normalisasi Tempat & Tanggal Lahir (TTL) dari format ADMOPS
+              let fetchedTempatLahir = (newS.tempatLahir || newS.tempat_lahir || newS.tempat || '').trim();
+              let fetchedTglLahir = (newS.tglLahir || newS.tgl_lahir || newS.tanggalLahir || newS.tanggal_lahir || newS.tgl || '').trim();
+              let fetchedTtl = (newS.ttl || newS.tempatTanggalLahir || '').trim();
+
+              if ((!fetchedTempatLahir || !fetchedTglLahir) && fetchedTtl) {
+                if (fetchedTtl.includes(',')) {
+                  const parts = fetchedTtl.split(',');
                   if (!fetchedTempatLahir) fetchedTempatLahir = parts[0].trim();
                   if (!fetchedTglLahir) fetchedTglLahir = parts.slice(1).join(',').trim();
                 } else if (!fetchedTempatLahir) {
-                  fetchedTempatLahir = rawTtl.trim();
+                  fetchedTempatLahir = fetchedTtl;
                 }
               }
 
-              if (fetchedTglLahir) {
-                try {
-                  const d = new Date(fetchedTglLahir);
-                  if (!isNaN(d.getTime())) {
-                    fetchedTglLahir = d.toISOString().split('T')[0];
-                  }
-                } catch(e) {}
-              }
-
-              const existingIndex = appData.siswa.findIndex(s => 
-                (studentNisn && s.nisn && String(s.nisn).trim() === String(studentNisn).trim()) ||
-                (s.nama && s.nama.toLowerCase().trim() === studentName.toLowerCase().trim())
+              // Pertahankan ID siswa yang sudah ada jika cocok agar relasi Absensi & Penilaian tidak putus
+              const existingMatch = appData.siswa.find(s =>
+                (newS.id && String(s.id) === String(newS.id)) ||
+                (studentNisn && s.nisn && String(s.nisn).includes(studentNisn)) ||
+                (s.nama && s.nama.toLowerCase().trim() === studentName.toLowerCase())
               );
 
-              if (existingIndex !== -1) {
-                appData.siswa[existingIndex] = {
-                  ...appData.siswa[existingIndex],
-                  nama: studentName,
-                  nisn: studentNisn || appData.siswa[existingIndex].nisn,
-                  kelas: studentKelas || appData.siswa[existingIndex].kelas,
-                  tempatLahir: fetchedTempatLahir || appData.siswa[existingIndex].tempatLahir || '',
-                  tglLahir: fetchedTglLahir || appData.siswa[existingIndex].tglLahir || '',
-                  jk: studentJk
-                };
-                updatedCount++;
-              } else {
-                appData.siswa.push({
-                  id: newS.id || Date.now() + Math.floor(Math.random() * 1000),
-                  nama: studentName,
-                  nisn: studentNisn,
-                  kelas: studentKelas,
-                  tempatLahir: fetchedTempatLahir,
-                  tglLahir: fetchedTglLahir,
-                  jk: studentJk
-                });
-                addedCount++;
-              }
+              syncedList.push({
+                id: existingMatch ? existingMatch.id : (newS.id ? Number(newS.id) : (Date.now() + idx)),
+                nama: studentName,
+                nisn: combinedNisnNis,
+                nis: studentNis,
+                kelas: studentKelas,
+                tempatLahir: fetchedTempatLahir,
+                tglLahir: fetchedTglLahir,
+                ttl: fetchedTtl || (fetchedTempatLahir && fetchedTglLahir ? `${fetchedTempatLahir}, ${fetchedTglLahir}` : (fetchedTempatLahir || fetchedTglLahir || '')),
+                jk: studentJk
+              });
+              countSynced++;
             });
+
+            // Jika menarik semua kelas, timpa dengan daftar terbaru ADMOPS; jika filter kelas tertentu, perbarui kelas tersebut
+            if (!selectedKelas || selectedKelas === 'ALL') {
+              appData.siswa = syncedList;
+            } else {
+              const filterNorm = selectedKelas.toLowerCase().trim();
+              const numOnly = filterNorm.replace('kelas ', '').trim();
+              const otherClasses = appData.siswa.filter(s => {
+                const k = (s.kelas || '').toString().toLowerCase().trim();
+                return !(k === filterNorm || k === numOnly || k.includes(filterNorm));
+              });
+              appData.siswa = [...otherClasses, ...syncedList];
+            }
 
             saveAppDataToRemote('save');
             renderSiswaTable();
             updateDashboardData();
 
-            showToast('success-save', `Berhasil menarik data ADMOPS! ${addedCount} baru, ${updatedCount} diperbarui.`);
+            // Catat pesan konfirmasi bahwa tarik ulang data telah dilakukan
+            tambahPesanOtomatis({
+              kategori: 'SINKRONISASI_SELESAI',
+              judul: 'Tarik Ulang Data Siswa Berhasil',
+              isi: `Daftar siswa telah diperbarui dari server utama ADMOPS (${countSynced} siswa aktif ${selectedKelas === 'ALL' ? 'semua kelas' : selectedKelas}).`,
+              perluTarikUlang: false
+            });
+
+            showToast('success-save', `Berhasil menarik ${countSynced} data siswa dari server ADMOPS!`);
           } else {
-            showToast('error', 'Format data dari ADMOPS tidak sesuai!');
+            showToast('error', `Data siswa untuk filter "${selectedKelas}" tidak ditemukan di server ADMOPS.`);
           }
         })
         .catch(err => {
-          console.error("Gagal menarik data siswa dari ADMOPS:", err);
-          showToast('error', 'Gagal terhubung ke database ADMOPS.');
+          console.error('Error tarik data siswa dari ADMOPS:', err);
+          showToast('error', 'Gagal terhubung ke server ADMOPS. Periksa koneksi internet Anda.');
         });
+    }
+
+    // =========================================================================
+    // MODUL PESAN & DETEKSI OTOMATIS MUTASI / NAIK KELAS / JUMLAH SISWA ADMOPS
+    // =========================================================================
+    let currentFilterPesanTab = 'ALL';
+    let lastAdmopsCheckTimestamp = '';
+
+    function formatWaktuPesanSekarang() {
+      const now = new Date();
+      const tgl = now.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+      const jam = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }).replace(':', '.');
+      return `${tgl}, ${jam}`;
+    }
+
+    function setFilterPesanTab(tabKey) {
+      currentFilterPesanTab = tabKey;
+      const tabs = ['ALL', 'MUTASI', 'NAIK_KELAS', 'SISWA_BARU'];
+      tabs.forEach(t => {
+        const btn = document.getElementById('tab-pesan-' + t);
+        if (!btn) return;
+        if (t === tabKey) {
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-extrabold transition bg-emerald-900 text-white shadow-sm cursor-pointer';
+        } else {
+          btn.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-slate-100 text-slate-600 hover:bg-slate-200 cursor-pointer';
+        }
+      });
+      renderPesanList();
+    }
+
+    function updateBadgePesan() {
+      const badge = document.getElementById('badge-pesan-unread');
+      if (!badge) return;
+      const unreadCount = (appData.pesan || []).filter(p => !p.dibaca).length;
+      if (unreadCount > 0) {
+        badge.innerText = unreadCount > 99 ? '99+' : unreadCount;
+        badge.classList.remove('hidden');
+      } else {
+        badge.classList.add('hidden');
+      }
+    }
+
+    function tambahPesanOtomatis({ kategori, judul, isi, perluTarikUlang = false, signatureKey = '' }) {
+      if (!Array.isArray(appData.pesan)) appData.pesan = [];
+
+      // Cegah duplikasi pesan yang persis sama
+      if (signatureKey) {
+        const sudahAda = appData.pesan.some(p => p.signatureKey === signatureKey);
+        if (sudahAda) return false;
+      }
+
+      const waktuStr = formatWaktuPesanSekarang();
+
+      appData.pesan.unshift({
+        id: Date.now() + Math.floor(Math.random() * 1000),
+        kategori: kategori || 'INFO', // MUTASI, NAIK_KELAS, SISWA_BARU, SINKRONISASI_SELESAI
+        judul: judul,
+        isi: isi,
+        waktu: waktuStr,
+        dibaca: false,
+        perluTarikUlang: perluTarikUlang,
+        signatureKey: signatureKey
+      });
+
+      // Batasi riwayat maksimal 100 pesan terbaru
+      if (appData.pesan.length > 100) {
+        appData.pesan = appData.pesan.slice(0, 100);
+      }
+
+      updateBadgePesan();
+      if (currentNav === 'pesan') renderPesanList();
+      return true;
+    }
+
+    function cekPerubahanDataAdmops(manualTrigger = false) {
+      if (manualTrigger) {
+        showToast('loading-save', 'Memeriksa pembaruan jumlah & status siswa di server ADMOPS...');
+      }
+
+      const admopsUrl = 'https://script.google.com/macros/s/AKfycbyA_-hLaFQozmvIB0RNlAIu-xrG5ZysnWsgrEd4VNPt6mZ62Q-KiQGWUie9ds89g3GhWw/exec?action=tarik_siswa&t=' + Date.now();
+
+      fetch(admopsUrl)
+        .then(res => res.json())
+        .then(res => {
+          let rawList = [];
+          if (res && res.status === 'success' && res.data) {
+            if (Array.isArray(res.data.siswa)) rawList = res.data.siswa;
+            else if (Array.isArray(res.data.pdAktif)) rawList = res.data.pdAktif;
+            else if (Array.isArray(res.data)) rawList = res.data;
+          } else if (Array.isArray(res)) {
+            rawList = res;
+          }
+
+          lastAdmopsCheckTimestamp = formatWaktuPesanSekarang();
+          const lastCheckedEl = document.getElementById('pesan-last-checked-text');
+          if (lastCheckedEl) {
+            lastCheckedEl.innerText = `Terakhir diperiksa: ${lastAdmopsCheckTimestamp}`;
+          }
+
+          if (rawList.length === 0) {
+            if (manualTrigger) showToast('error', 'Server ADMOPS tidak mengembalikan daftar siswa.');
+            return;
+          }
+
+          // Pisahkan siswa aktif dan siswa mutasi/keluar dari server pusat ADMOPS
+          const serverAktif = rawList.filter(s => !(s.statusKeluar || s.jenisKeluar));
+          const serverKeluar = rawList.filter(s => (s.statusKeluar || s.jenisKeluar));
+          const totalServerAktif = serverAktif.length;
+          const totalLokal = Array.isArray(appData.siswa) ? appData.siswa.length : 0;
+
+          let adaPesanBaru = false;
+          const todayKey = new Date().toISOString().split('T')[0];
+
+          // 0. Buat pesan informasi jumlah total siswa aktif pada server aplikasi ADMOPS
+          if (totalServerAktif > 0) {
+            const selisihInfo = totalLokal === 0
+              ? `Ditemukan <b>${totalServerAktif} peserta didik aktif</b> pada aplikasi ADMOPS. Silakan klik tombol <b>Tarik Ulang Data Siswa</b> untuk menyinkronkan data.`
+              : (totalServerAktif !== totalLokal
+                  ? `Ditemukan <b>${totalServerAktif} peserta didik aktif</b> pada aplikasi ADMOPS (data lokal saat ini: <b>${totalLokal} siswa</b>). Silakan klik tombol <b>Tarik Ulang Data Siswa</b> untuk menyinkronkan data.`
+                  : `Tercatat <b>${totalServerAktif} peserta didik aktif</b> pada aplikasi ADMOPS (sudah sesuai dengan data lokal Anda).`);
+
+            const createdTotal = tambahPesanOtomatis({
+              kategori: 'SISWA_BARU',
+              judul: `Tersedia ${totalServerAktif} Data Siswa di Aplikasi ADMOPS`,
+              isi: selisihInfo,
+              perluTarikUlang: (totalServerAktif !== totalLokal),
+              signatureKey: `TOTAL_ADMOPS_${totalServerAktif}_LOKAL_${totalLokal}_${todayKey}`
+            });
+            if (createdTotal) adaPesanBaru = true;
+          }
+
+          // 1. Deteksi Siswa Lokal yang Mutasi / Keluar / Hilang dari daftar aktif server ADMOPS
+          (appData.siswa || []).forEach(lokal => {
+            const lokalNama = (lokal.nama || '').trim();
+            const lokalNisnClean = String(lokal.nisn || '').split('/')[0].trim();
+
+            const matchKeluar = serverKeluar.find(sk => {
+              const skNama = (sk.nama || sk.namaSiswa || '').trim().toLowerCase();
+              const skNisn = String(sk.nisn || '').trim();
+              return (lokalNisnClean && skNisn && skNisn === lokalNisnClean) || (skNama === lokalNama.toLowerCase());
+            });
+
+            const matchAktif = serverAktif.find(sa => {
+              const saNama = (sa.nama || sa.namaSiswa || '').trim().toLowerCase();
+              const saNisn = String(sa.nisn || '').trim();
+              return (lokalNisnClean && saNisn && saNisn === lokalNisnClean) || (saNama === lokalNama.toLowerCase());
+            });
+
+            if (matchKeluar || !matchAktif) {
+              const alasan = matchKeluar ? (matchKeluar.jenisKeluar || matchKeluar.statusKeluar || 'Mutasi Keluar') : 'Mutasi / Keluar dari Daftar Aktif';
+              const created = tambahPesanOtomatis({
+                kategori: 'MUTASI',
+                judul: `Siswa Mutasi: ${lokalNama}`,
+                isi: `Siswa atas nama <b>${lokalNama}</b> (${lokal.kelas || '-'}) sudah tercatat <b>${alasan}</b> pada Aplikasi ADMOPS sehingga jumlah siswa berkurang. Silakan <b>Tarik Ulang Data Siswa</b>.`,
+                perluTarikUlang: true,
+                signatureKey: `MUTASI_${lokalNama.toLowerCase()}_${todayKey}`
+              });
+              if (created) adaPesanBaru = true;
+            } else if (matchAktif) {
+              // 2. Deteksi Siswa Naik Kelas / Pindah Kelas di Server ADMOPS
+              const serverKelas = String(matchAktif.kelas || '').trim();
+              const lokalKelas = String(lokal.kelas || '').trim();
+              if (serverKelas && lokalKelas && serverKelas.toLowerCase() !== lokalKelas.toLowerCase()) {
+                const created = tambahPesanOtomatis({
+                  kategori: 'NAIK_KELAS',
+                  judul: `Perubahan Kelas / Naik Kelas: ${lokalNama}`,
+                  isi: `Siswa atas nama <b>${lokalNama}</b> mengalami perubahan kelas pada Aplikasi ADMOPS (dari <b>${lokalKelas}</b> menjadi <b>${serverKelas}</b>). Harap lakukan <b>Tarik Ulang Data Siswa</b>.`,
+                  perluTarikUlang: true,
+                  signatureKey: `NAIKKELAS_${lokalNama.toLowerCase()}_${lokalKelas}_TO_${serverKelas}`
+                });
+                if (created) adaPesanBaru = true;
+              }
+            }
+          });
+
+          // 3. Deteksi Siswa Baru / Mutasi Masuk pada kelas yang sama di Server ADMOPS
+          const kelasLokalSet = new Set((appData.siswa || []).map(s => String(s.kelas || '').toLowerCase().trim()).filter(Boolean));
+          if (kelasLokalSet.size > 0) {
+            serverAktif.forEach(sa => {
+              const saNama = (sa.nama || sa.namaSiswa || '').trim();
+              const saKelas = String(sa.kelas || '').trim();
+              const saNisn = String(sa.nisn || '').trim();
+
+              if (saNama && saKelas && kelasLokalSet.has(saKelas.toLowerCase())) {
+                const sudahDiLokal = appData.siswa.some(lokal => {
+                  const lokalNisnClean = String(lokal.nisn || '').split('/')[0].trim();
+                  return (saNisn && lokalNisnClean && saNisn === lokalNisnClean) ||
+                         ((lokal.nama || '').toLowerCase().trim() === saNama.toLowerCase());
+                });
+
+                if (!sudahDiLokal) {
+                  const created = tambahPesanOtomatis({
+                    kategori: 'SISWA_BARU',
+                    judul: `Siswa Baru / Mutasi Masuk: ${saNama}`,
+                    isi: `Terdapat penambahan siswa baru atas nama <b>${saNama}</b> pada <b>${saKelas}</b> di Aplikasi ADMOPS. Silakan <b>Tarik Ulang Data Siswa</b> untuk memperbarui daftar kelas.`,
+                    perluTarikUlang: true,
+                    signatureKey: `BARU_${saNama.toLowerCase()}_${saKelas}_${todayKey}`
+                  });
+                  if (created) adaPesanBaru = true;
+                }
+              }
+            });
+          }
+
+          if (currentNav === 'pesan') renderPesanList();
+
+          if (adaPesanBaru) {
+            saveAppDataToRemote('save');
+            showToast('success-save', `Ditemukan ${totalServerAktif} peserta didik aktif di server ADMOPS.`);
+          } else if (manualTrigger) {
+            showToast('success-save', `Pembaruan diperiksa: ${totalServerAktif} peserta didik aktif di server ADMOPS.`);
+          }
+        })
+        .catch(err => {
+          console.warn('Pengecekan otomatis ADMOPS dilewati:', err);
+          if (manualTrigger) showToast('error', 'Gagal memeriksa pembaruan dari server ADMOPS.');
+        });
+    }
+
+    function renderPesanList() {
+      const container = document.getElementById('container-daftar-pesan');
+      const banner = document.getElementById('banner-tarik-ulang-siswa');
+      const lastCheckedEl = document.getElementById('pesan-last-checked-text');
+      if (!container) return;
+
+      if (lastCheckedEl) {
+        if (!lastAdmopsCheckTimestamp) lastAdmopsCheckTimestamp = formatWaktuPesanSekarang();
+        lastCheckedEl.innerText = `Terakhir diperiksa: ${lastAdmopsCheckTimestamp}`;
+      }
+
+      const allPesan = appData.pesan || [];
+      const adaYangPerluTarik = allPesan.some(p => !p.dibaca && p.perluTarikUlang);
+
+      if (banner) {
+        if (adaYangPerluTarik) banner.classList.remove('hidden');
+        else banner.classList.add('hidden');
+      }
+
+      const filteredPesan = allPesan.filter(p => {
+        if (currentFilterPesanTab === 'ALL') return true;
+        return p.kategori === currentFilterPesanTab;
+      });
+
+      if (filteredPesan.length === 0) {
+        container.innerHTML = `
+          <div class="bg-white rounded-2xl border border-slate-200/80 p-10 text-center space-y-3 shadow-sm">
+            <div class="w-16 h-16 rounded-2xl bg-slate-100 text-slate-400 mx-auto flex items-center justify-center text-3xl">
+              <i class="fa-solid fa-envelope-open"></i>
+            </div>
+            <h4 class="font-extrabold text-slate-700 text-base">Belum Ada Pesan pada Kategori Ini</h4>
+            <p class="text-xs text-slate-400 max-w-md mx-auto leading-relaxed">
+              Klik tombol <b>Cek Pembaruan ADMOPS</b> di kanan atas untuk mengecek jumlah siswa aktif, mutasi, maupun kenaikan kelas terbaru dari server ADMOPS.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = '';
+      filteredPesan.forEach(p => {
+        let iconClass = 'fa-circle-info';
+        let iconBoxBg = 'bg-blue-50 text-blue-600';
+        let badgeBg = 'bg-blue-100 text-blue-700 border-blue-200';
+        let labelKategori = 'INFO ADMOPS';
+        let borderLeft = 'border-l-blue-500';
+
+        if (p.kategori === 'MUTASI') {
+          iconClass = 'fa-user-minus';
+          iconBoxBg = 'bg-red-50 text-red-600';
+          badgeBg = 'bg-red-100 text-red-700 border-red-200';
+          labelKategori = 'SISWA MUTASI';
+          borderLeft = 'border-l-red-500';
+        } else if (p.kategori === 'NAIK_KELAS') {
+          iconClass = 'fa-angles-up';
+          iconBoxBg = 'bg-amber-50 text-amber-600';
+          badgeBg = 'bg-amber-100 text-amber-800 border-amber-200';
+          labelKategori = 'NAIK KELAS';
+          borderLeft = 'border-l-amber-500';
+        } else if (p.kategori === 'SISWA_BARU') {
+          iconClass = 'fa-user-plus';
+          iconBoxBg = 'bg-emerald-50 text-emerald-600';
+          badgeBg = 'bg-emerald-100 text-emerald-800 border-emerald-200';
+          labelKategori = 'SISWA BARU';
+          borderLeft = 'border-l-amber-500';
+        } else if (p.kategori === 'SINKRONISASI_SELESAI') {
+          iconClass = 'fa-circle-check';
+          iconBoxBg = 'bg-teal-50 text-teal-600';
+          badgeBg = 'bg-teal-100 text-teal-800 border-teal-200';
+          labelKategori = 'SINKRONISASI';
+          borderLeft = 'border-l-teal-500';
+        }
+
+        const card = document.createElement('div');
+        card.className = `bg-white rounded-2xl p-4 sm:p-5 border border-slate-200/90 border-l-4 ${borderLeft} shadow-sm transition hover:shadow-md`;
+        card.innerHTML = `
+          <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-2xl ${iconBoxBg} flex items-center justify-center text-xl flex-shrink-0">
+                <i class="fa-solid ${iconClass}"></i>
+              </div>
+              <div class="space-y-1.5">
+                <div class="flex items-center gap-2.5 flex-wrap">
+                  <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black border ${badgeBg} uppercase">${labelKategori}</span>
+                  <span class="text-xs text-slate-400 font-semibold flex items-center gap-1"><i class="fa-regular fa-clock"></i> ${p.waktu || '-'}</span>
+                  ${!p.dibaca ? '<span class="px-2.5 py-0.5 rounded-full bg-red-600 text-white text-[10px] font-black uppercase tracking-wide">BARU</span>' : ''}
+                </div>
+                <h4 class="font-extrabold text-slate-800 text-sm sm:text-base">${p.judul || 'Pemberitahuan ADMOPS'}</h4>
+                <p class="text-xs sm:text-[13px] text-slate-500 leading-relaxed">${p.isi || ''}</p>
+              </div>
+            </div>
+
+            <div class="flex items-center gap-3 self-end md:self-center flex-shrink-0">
+              ${p.perluTarikUlang ? `
+                <button type="button" onclick="tandaiPesanDibaca(${p.id}); openModalTarikSiswa();" class="bg-indigo-600 hover:bg-indigo-700 text-white font-extrabold px-4 py-2.5 rounded-xl text-xs shadow-sm flex items-center gap-2 whitespace-nowrap transition active:scale-95 cursor-pointer">
+                  <i class="fa-solid fa-cloud-arrow-down text-amber-300"></i>
+                  <span>Tarik Ulang Data Siswa</span>
+                </button>
+              ` : ''}
+              ${!p.dibaca ? `
+                <button type="button" onclick="tandaiPesanDibaca(${p.id})" title="Tandai Sudah Dibaca" class="w-9 h-9 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-emerald-600 flex items-center justify-center transition cursor-pointer">
+                  <i class="fa-solid fa-check"></i>
+                </button>
+              ` : ''}
+              <button type="button" onclick="hapusSatuPesan(${p.id})" title="Hapus Pesan" class="w-9 h-9 rounded-xl hover:bg-red-50 text-slate-400 hover:text-red-600 flex items-center justify-center transition cursor-pointer">
+                <i class="fa-solid fa-trash-can"></i>
+              </button>
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function tandaiPesanDibaca(id) {
+      const target = (appData.pesan || []).find(p => p.id === id);
+      if (target && !target.dibaca) {
+        target.dibaca = true;
+        updateBadgePesan();
+        renderPesanList();
+        saveAppDataToRemote('save');
+      }
+    }
+
+    function tandaiSemuaPesanDibaca() {
+      if (!Array.isArray(appData.pesan) || appData.pesan.length === 0) return;
+      appData.pesan.forEach(p => { p.dibaca = true; });
+      updateBadgePesan();
+      renderPesanList();
+      saveAppDataToRemote('save');
+      showToast('success-save', 'Semua pesan ditandai sudah dibaca.');
+    }
+
+    function hapusSatuPesan(id) {
+      appData.pesan = (appData.pesan || []).filter(p => p.id !== id);
+      updateBadgePesan();
+      renderPesanList();
+      saveAppDataToRemote('delete');
+    }
+
+    function hapusSemuaPesan() {
+      appData.pesan = [];
+      updateBadgePesan();
+      renderPesanList();
+      saveAppDataToRemote('delete');
     }
 
     function editSiswa(id) {
@@ -5031,7 +5780,235 @@
       checkAuthStatus();
       checkPwaStandalone();
       checkOrientationStatus();
+      initNetworkMonitor();
     };
+
+    // =========================================================================
+    // SISTEM PEMANTAUAN JARINGAN OTOMATIS (ONLINE / JARINGAN BURUK / OFFLINE)
+    // =========================================================================
+    let currentNetworkState = 'unknown'; // 'online', 'poor', 'offline'
+    let networkBannerHideTimer = null;
+
+    function initNetworkMonitor() {
+      window.addEventListener('online', () => {
+        checkNetworkQualityNow(true);
+      });
+
+      window.addEventListener('offline', () => {
+        applyNetworkStatusUI('offline', 0, true);
+      });
+
+      // Pantau perubahan kecepatan koneksi dari Network Information API jika didukung browser
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      if (conn && typeof conn.addEventListener === 'function') {
+        conn.addEventListener('change', () => {
+          checkNetworkQualityNow(false);
+        });
+      }
+
+      // Cek pertama kali saat aplikasi dimuat & berkala setiap 25 detik
+      checkNetworkQualityNow(false);
+      setInterval(() => {
+        checkNetworkQualityNow(false);
+      }, 25000);
+    }
+
+    function checkNetworkQualityNow(forceNotify = false) {
+      if (!navigator.onLine) {
+        applyNetworkStatusUI('offline', 0, forceNotify);
+        return;
+      }
+
+      // Deteksi awal dari navigator.connection hanya jika benar-benar 2g / slow-2g
+      const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+      let hardwareSlow = false;
+      if (conn && (conn.effectiveType === 'slow-2g' || conn.effectiveType === '2g')) {
+        hardwareSlow = true;
+      }
+
+      // Gunakan endpoint ringan & cepat (Google / Cloudflare) untuk mengukur ping internet asli
+      // Hindari ping langsung ke Google Apps Script untuk cek sinyal karena GAS memiliki cold-start 2-4 detik
+      const startTime = performance.now();
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 7000);
+
+      const pingUrl = 'https://www.gstatic.com/generate_204?t=' + Date.now();
+
+      fetch(pingUrl, {
+        method: 'GET',
+        mode: 'no-cors',
+        cache: 'no-store',
+        signal: controller.signal
+      })
+        .then(() => {
+          clearTimeout(timeoutId);
+          const latencyMs = Math.round(performance.now() - startTime);
+
+          // Ambang batas realistis untuk jaringan seluler & Wi-Fi di Indonesia (> 3500ms baru dianggap lemah)
+          if (hardwareSlow || latencyMs > 3500) {
+            applyNetworkStatusUI('poor', latencyMs, forceNotify);
+          } else {
+            applyNetworkStatusUI('online', latencyMs, forceNotify);
+          }
+        })
+        .catch(() => {
+          clearTimeout(timeoutId);
+          if (!navigator.onLine) {
+            applyNetworkStatusUI('offline', 0, forceNotify);
+          } else {
+            // Fallback ke endpoint cadangan sebelum menyimpulkan jaringan buruk
+            const fallbackStart = performance.now();
+            fetch('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css?ping=' + Date.now(), {
+              method: 'HEAD',
+              mode: 'no-cors',
+              cache: 'no-store'
+            })
+              .then(() => {
+                const fbLatency = Math.round(performance.now() - fallbackStart);
+                if (fbLatency > 3500) {
+                  applyNetworkStatusUI('poor', fbLatency, forceNotify);
+                } else {
+                  applyNetworkStatusUI('online', fbLatency, forceNotify);
+                }
+              })
+              .catch(() => {
+                applyNetworkStatusUI('poor', 5000, forceNotify);
+              });
+          }
+        });
+    }
+
+    function applyNetworkStatusUI(newState, latencyMs, forceNotify) {
+      const previousState = currentNetworkState;
+      currentNetworkState = newState;
+
+      const pill = document.getElementById('network-header-pill');
+      const pillIcon = document.getElementById('network-header-icon');
+      const pillText = document.getElementById('network-header-text');
+      const pillPing = document.getElementById('network-header-ping');
+
+      if (pill && pillIcon && pillText) {
+        if (newState === 'online') {
+          pill.className = 'bg-emerald-50 text-emerald-800 px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-extrabold flex items-center gap-1.5 border border-emerald-200 shadow-sm transition cursor-pointer';
+          pillIcon.className = 'fa-solid fa-wifi text-emerald-600';
+          pillText.innerText = 'Online';
+          if (pillPing) pillPing.innerText = latencyMs > 0 ? `(${latencyMs}ms)` : '';
+        } else if (newState === 'poor') {
+          pill.className = 'bg-amber-50 text-amber-800 px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-extrabold flex items-center gap-1.5 border border-amber-300 shadow-sm transition cursor-pointer animate-pulse';
+          pillIcon.className = 'fa-solid fa-signal text-amber-600';
+          pillText.innerText = 'Jaringan Buruk';
+          if (pillPing) pillPing.innerText = latencyMs > 0 ? `(${latencyMs}ms)` : '';
+        } else {
+          pill.className = 'bg-red-50 text-red-800 px-2.5 md:px-3.5 py-1 md:py-1.5 rounded-full text-[10px] md:text-xs font-extrabold flex items-center gap-1.5 border border-red-300 shadow-sm transition cursor-pointer animate-pulse';
+          pillIcon.className = 'fa-solid fa-plane-slash text-red-600';
+          pillText.innerText = 'Offline';
+          if (pillPing) pillPing.innerText = '';
+        }
+      }
+
+      const stateChanged = previousState !== newState;
+
+      // Tampilkan banner & notifikasi toast ketika status berubah atau saat pengecekan paksa
+      if (newState === 'offline') {
+        updateSyncBadge('error', 'Offline');
+        showNetworkBanner(
+          'offline',
+          'Aplikasi Offline',
+          'Aplikasi Offile Silakana Periksa Jaringan anda. Data tidak dapat disinkronkan sementara waktu.'
+        );
+        if (stateChanged || forceNotify) {
+          showToast('error', 'Aplikasi Offile Silakana Periksa Jaringan anda');
+        }
+      } else if (newState === 'poor') {
+        updateSyncBadge('syncing', 'Jaringan Lemah');
+        showNetworkBanner(
+          'poor',
+          'Peringatan: Jaringan Buruk / Lambat',
+          `Koneksi internet tidak stabil (${latencyMs} ms). Proses simpan & sinkronisasi data mungkin berjalan lebih lambat.`
+        );
+        if (stateChanged || forceNotify) {
+          showToast('warning-net', 'Peringatan: Jaringan Buruk! Periksa sinyal internet Anda.');
+        }
+      } else if (newState === 'online') {
+        updateSyncBadge('connected', 'Terhubung');
+        if (previousState === 'offline' || previousState === 'poor') {
+          showNetworkBanner(
+            'online',
+            'Aplikasi Kembali Online',
+            `Koneksi internet stabil (${latencyMs} ms). Aplikasi siap digunakan dan disinkronkan.`,
+            4000
+          );
+          showToast('success-save', 'Aplikasi Sudah Online! Koneksi jaringan normal.');
+        } else if (forceNotify && previousState === 'unknown') {
+          showNetworkBanner(
+            'online',
+            'Aplikasi Sudah Online',
+            `Koneksi internet aktif & stabil (${latencyMs} ms). Siap digunakan.`,
+            3500
+          );
+        } else if (forceNotify) {
+          showToast('success-save', `Aplikasi Online (${latencyMs} ms) - Jaringan Stabil.`);
+          hideNetworkBanner();
+        } else {
+          hideNetworkBanner();
+        }
+      }
+    }
+
+    function showNetworkBanner(type, title, desc, autoHideMs = 0) {
+      const banner = document.getElementById('network-status-banner');
+      const box = document.getElementById('network-banner-box');
+      const iconWrap = document.getElementById('network-banner-icon-wrap');
+      const icon = document.getElementById('network-banner-icon');
+      const titleEl = document.getElementById('network-banner-title');
+      const descEl = document.getElementById('network-banner-desc');
+
+      if (!banner || !box || !iconWrap || !icon || !titleEl || !descEl) return;
+
+      if (networkBannerHideTimer) {
+        clearTimeout(networkBannerHideTimer);
+        networkBannerHideTimer = null;
+      }
+
+      if (type === 'offline') {
+        box.className = 'px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl bg-red-600/95 border-red-400 text-white';
+        iconWrap.className = 'w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center text-lg flex-shrink-0 animate-bounce';
+        icon.className = 'fa-solid fa-wifi';
+      } else if (type === 'poor') {
+        box.className = 'px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl bg-amber-500/95 border-amber-300 text-slate-950';
+        iconWrap.className = 'w-10 h-10 rounded-xl bg-slate-900/15 text-slate-950 flex items-center justify-center text-lg flex-shrink-0 animate-pulse';
+        icon.className = 'fa-solid fa-triangle-exclamation';
+      } else {
+        box.className = 'px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl bg-emerald-600/95 border-emerald-400 text-white';
+        iconWrap.className = 'w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center text-lg flex-shrink-0';
+        icon.className = 'fa-solid fa-circle-check';
+      }
+
+      titleEl.innerText = title;
+      descEl.innerText = desc;
+
+      banner.classList.remove('hidden');
+      setTimeout(() => {
+        banner.classList.remove('-translate-y-4', 'opacity-0');
+        banner.classList.add('translate-y-0', 'opacity-100');
+      }, 10);
+
+      if (autoHideMs > 0) {
+        networkBannerHideTimer = setTimeout(() => {
+          hideNetworkBanner();
+        }, autoHideMs);
+      }
+    }
+
+    function hideNetworkBanner() {
+      const banner = document.getElementById('network-status-banner');
+      if (!banner) return;
+      banner.classList.remove('translate-y-0', 'opacity-100');
+      banner.classList.add('-translate-y-4', 'opacity-0');
+      setTimeout(() => {
+        banner.classList.add('hidden');
+      }, 300);
+    }
 
     // FUNGSI CEK DETEKSI ORIENTASI LAYAR HP (PORTRAIT / LANDSCAPE)
     function checkOrientationStatus() {

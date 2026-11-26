@@ -446,20 +446,20 @@
   </div>
 
   <!-- BANNER PERINGATAN STATUS KONEKSI (OFFLINE / JARINGAN BURUK / ONLINE KEMBALI) -->
-  <div id="network-status-banner" class="fixed top-3 left-1/2 -translate-x-1/2 z-[190] w-[92%] max-w-lg hidden transition-all duration-300 transform -translate-y-4 opacity-0">
-    <div id="network-banner-box" class="px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl">
-      <div class="flex items-center gap-3">
-        <div id="network-banner-icon-wrap" class="w-10 h-10 rounded-xl flex items-center justify-center text-lg flex-shrink-0">
+  <div id="network-status-banner" class="fixed top-0 inset-x-0 z-[190] w-full hidden transition-all duration-300 transform -translate-y-full opacity-0 shadow-lg">
+    <div id="network-banner-box" class="w-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 backdrop-blur-md">
+      <div class="flex items-center gap-2.5 sm:gap-3 flex-1 min-w-0">
+        <div id="network-banner-icon-wrap" class="w-7 h-7 rounded-lg flex items-center justify-center text-base flex-shrink-0">
           <i id="network-banner-icon" class="fa-solid fa-wifi"></i>
         </div>
-        <div>
-          <p id="network-banner-title" class="text-xs sm:text-sm font-black tracking-tight leading-tight">Status Jaringan</p>
-          <p id="network-banner-desc" class="text-[11px] font-medium leading-snug mt-0.5">Memeriksa koneksi internet...</p>
-        </div>
+        <p class="text-xs sm:text-sm font-bold tracking-tight leading-snug">
+          <span id="network-banner-title" class="font-extrabold">Status Jaringan</span>
+          <span id="network-banner-desc" class="font-semibold"> — Memeriksa koneksi internet...</span>
+        </p>
       </div>
-      <button type="button" onclick="checkNetworkQualityNow(true)" title="Periksa Ulang Jaringan" class="px-3 py-1.5 rounded-xl bg-white/20 hover:bg-white/30 text-[11px] font-extrabold transition flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+      <button type="button" onclick="checkNetworkQualityNow(true)" title="Periksa Ulang Jaringan" class="px-3.5 py-1.5 rounded-xl bg-white/20 hover:bg-white/30 active:scale-95 text-xs font-extrabold transition flex items-center gap-1.5 flex-shrink-0 cursor-pointer border border-white/15">
         <i class="fa-solid fa-rotate"></i>
-        <span class="hidden sm:inline">Cek</span>
+        <span>Cek Jaringan</span>
       </button>
     </div>
   </div>
@@ -594,7 +594,7 @@
         </form>
 
         <div class="pt-2 sm:pt-4 border-t border-slate-100 text-center">
-          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">ADMOPS Mobile v2.6</p>
+          <p class="text-[10px] sm:text-xs text-slate-400 font-medium">ADMOPS Mobile v2.6 (Presensi QR Code)</p>
         </div>
       </div>
     </div>
@@ -5913,18 +5913,18 @@
         updateSyncBadge('error', 'Offline');
         showNetworkBanner(
           'offline',
-          'Aplikasi Offline',
-          'Aplikasi Offile Silakana Periksa Jaringan anda. Data tidak dapat disinkronkan sementara waktu.'
+          'Koneksi terputus! Periksa jaringan Anda',
+          ' — Aplikasi sedang dalam mode Offline. Jangan Menyimpan Data Pada Saat Offline-Maka Datanya Tidak Akan Tersimpan Ke Database.'
         );
         if (stateChanged || forceNotify) {
-          showToast('error', 'Aplikasi Offile Silakana Periksa Jaringan anda');
+          showToast('error', 'Aplikasi Offline! Jangan Menyimpan Data Pada Saat Offline-Maka Datanya Tidak Akan Tersimpan Ke Database.');
         }
       } else if (newState === 'poor') {
         updateSyncBadge('syncing', 'Jaringan Lemah');
         showNetworkBanner(
           'poor',
           'Peringatan: Jaringan Buruk / Lambat',
-          `Koneksi internet tidak stabil (${latencyMs} ms). Proses simpan & sinkronisasi data mungkin berjalan lebih lambat.`
+          ` — Koneksi internet tidak stabil (${latencyMs} ms). Proses simpan & sinkronisasi data mungkin berjalan lebih lambat.`
         );
         if (stateChanged || forceNotify) {
           showToast('warning-net', 'Peringatan: Jaringan Buruk! Periksa sinyal internet Anda.');
@@ -5935,7 +5935,7 @@
           showNetworkBanner(
             'online',
             'Aplikasi Kembali Online',
-            `Koneksi internet stabil (${latencyMs} ms). Aplikasi siap digunakan dan disinkronkan.`,
+            ` — Koneksi internet stabil (${latencyMs} ms). Aplikasi siap digunakan dan disinkronkan.`,
             4000
           );
           showToast('success-save', 'Aplikasi Sudah Online! Koneksi jaringan normal.');
@@ -5943,7 +5943,7 @@
           showNetworkBanner(
             'online',
             'Aplikasi Sudah Online',
-            `Koneksi internet aktif & stabil (${latencyMs} ms). Siap digunakan.`,
+            ` — Koneksi internet aktif & stabil (${latencyMs} ms). Siap digunakan.`,
             3500
           );
         } else if (forceNotify) {
@@ -5971,16 +5971,16 @@
       }
 
       if (type === 'offline') {
-        box.className = 'px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl bg-red-600/95 border-red-400 text-white';
-        iconWrap.className = 'w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center text-lg flex-shrink-0 animate-bounce';
+        box.className = 'w-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 backdrop-blur-md bg-[#c81e1e] text-white border-b border-red-400/40';
+        iconWrap.className = 'w-7 h-7 rounded-lg text-amber-300 flex items-center justify-center text-base flex-shrink-0';
         icon.className = 'fa-solid fa-wifi';
       } else if (type === 'poor') {
-        box.className = 'px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl bg-amber-500/95 border-amber-300 text-slate-950';
-        iconWrap.className = 'w-10 h-10 rounded-xl bg-slate-900/15 text-slate-950 flex items-center justify-center text-lg flex-shrink-0 animate-pulse';
+        box.className = 'w-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 backdrop-blur-md bg-amber-500 text-slate-950 border-b border-amber-300';
+        iconWrap.className = 'w-7 h-7 rounded-lg text-slate-900 flex items-center justify-center text-base flex-shrink-0 animate-pulse';
         icon.className = 'fa-solid fa-triangle-exclamation';
       } else {
-        box.className = 'px-4 py-3 rounded-2xl shadow-2xl border flex items-center justify-between gap-3 backdrop-blur-xl bg-emerald-600/95 border-emerald-400 text-white';
-        iconWrap.className = 'w-10 h-10 rounded-xl bg-white/20 text-white flex items-center justify-center text-lg flex-shrink-0';
+        box.className = 'w-full px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3 backdrop-blur-md bg-emerald-600 text-white border-b border-emerald-400/40';
+        iconWrap.className = 'w-7 h-7 rounded-lg text-white flex items-center justify-center text-base flex-shrink-0';
         icon.className = 'fa-solid fa-circle-check';
       }
 
@@ -5989,7 +5989,7 @@
 
       banner.classList.remove('hidden');
       setTimeout(() => {
-        banner.classList.remove('-translate-y-4', 'opacity-0');
+        banner.classList.remove('-translate-y-full', 'opacity-0');
         banner.classList.add('translate-y-0', 'opacity-100');
       }, 10);
 
@@ -6004,7 +6004,7 @@
       const banner = document.getElementById('network-status-banner');
       if (!banner) return;
       banner.classList.remove('translate-y-0', 'opacity-100');
-      banner.classList.add('-translate-y-4', 'opacity-0');
+      banner.classList.add('-translate-y-full', 'opacity-0');
       setTimeout(() => {
         banner.classList.add('hidden');
       }, 300);
